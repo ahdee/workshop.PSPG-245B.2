@@ -38,7 +38,6 @@ Software requirements
     
 Please make sure to either clone the github repo or download the entire dropbox folder. Unzip this to a folder.  
 
-* https://www.dropbox.com/sh/lvaqmurdozncnxw/AADWRtK8woO4MjXIvGqcUcpXa?dl=1
 
 * https://github.com/ahdee/workshop.PSPG-245B.2.git
 
@@ -66,8 +65,12 @@ We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015)
 
 ```{r, include=T, echo=T, message=FALSE, warning=FALSE, fig=TRUE}
 
-# load require package and "source" an auxillary R script design for this workshop.  
-# the auxillary script will help manage some of the more complex/redundant tasks 
+# make sure to set to working directory 
+# if you don't do this your script will fail to run. 
+# Session->set working directory -> to source file location 
+
+# load require package and "source" an auxiliary R script design for this workshop.  
+# the auxiliary script will help manage some of the more complex/redundant tasks 
 
 library ( cgdsr)
 library ( ggplot2)
@@ -78,8 +81,9 @@ library ( reshape2)
 library(VennDiagram)
 library(gridExtra)
 library (ggrepel)
-# make sure to set to working directory 
-# Session->set working directory -> to source file location 
+library ( DT )
+
+
 source("auxi.R")
 
 # initiate cbioportal API
@@ -87,8 +91,8 @@ source("auxi.R")
 cbiop = CGDS("http://www.cbioportal.org/")
 ```
 
-# Lets learn how communicate with cbioportal and study what is available. 
-* This portal is hierarchically structured. This is the workflow will will use. 
+# Learn how to communicate with cbioportal and study what is available. 
+* This portal is hierarchically structured. This is the workflow will use. 
     + List of all the cancer studies available on this portal. 
     + Identify the study you want
     + List all the "cases" for that study, a case is a description of both data available for the study and/or subsets of certain phenotypes
@@ -96,6 +100,12 @@ cbiop = CGDS("http://www.cbioportal.org/")
 	+ which you can then use to get all the clincal data assocaited with the TCGA samples. 
 	+ moreover you use the study to get specific genetic profile ( datasets available for downloading ). 
 	+ From here you can then download the actual data. 
+
+# comment key 
+  + qqq = rhetorical, however answer it if you could.  
+  + HINT 
+  + X: bonus exercises  
+  + note: extra info you may or may not need
 
 ```{r }
 
@@ -106,26 +116,36 @@ studies = getCancerStudies(cbiop)
 k2( head ( studies, 10) , "example list of data available in cbioportal")
 
 # note: k2 is one of those cheat codes to make tables print out nicely 
-# ? what is the "10" for in the function above. 
+# Want to know more about a function? use "?" and the function name 
+
+? t.test
 
 # lets find out how many studies are available to the public
 dim ( studies ) # dim is a function to tabulate a dataframe
+nrow ( studies ) # nrow tells you how many rows 
 
-# ? how do you think we can use this to look for the dataset we need among > 200 studies?
+# qqq how do you think we can use this to look for the dataset we need among > 200 studies?
+## we can use the grepl function which uses regular expression to search within objects and returns a 
+## a vector of T and F 
+grepl("Breast", studies$name, ignore.case = T )
 
-# Find the dataset you want. 
-# According to the syllabus we are looking for TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015) 
-# However lets first search for all the breast cancer studies available so that we can look to see what is available. 
+# qqq, what is the T for what if you use lower case instead of upper case
+## you can subset a dataframe by telling it which row you want, either with a positional ( index ) or logical vector 
+
+## an index is position in a vector, eg apple, pear, peach, 
 
 breast = studies[ grepl("Breast", studies$name, ignore.case = T ), ]
-
-# ? what is the T for what if you use lower case instead of upper case
-
 k2(breast, "list of breast related studies")
 
-### First BONUS question! try to find if there are other cancer data you might interested in, eg Lung Cancer
+# According to the syllabus we are looking for TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015) 
+# However lets first search for all the breast cancer studies available so that we can look to see what is available. 
+# X, find how many studies are their with the Breast Invasive Carcinoma in the name column 
 
-# from the table we now know that the study id is:  brca_tcga_pub2015 
+datatable ( studies[ grepl("Breast Invasive Carcinoma", studies$name, ignore.case = T )  , ] )
+
+
+# qqq can you tell which is the study id you need  
+## study id is:  brca_tcga_pub2015 
 
 brca.study = "brca_tcga_pub2015"
 
@@ -364,6 +384,9 @@ for(i in seq(from=150, to=total, by=150) ){
     
     
 }
+
+
+
 # create coordinates
 mutations$igv = paste ( mutations$chr, mutations$start_position, mutations$end_position, mutations$reference_allele, mutations$variant_allele)
 
@@ -383,7 +406,9 @@ mutations$xvar_link_pdb = gsub('getma.org','http://mutationassessor.org/r3', mut
 
 ```{r fig=TRUE,fig.width=12, fig.height=12}
 expressionc= expression[complete.cases(expression), ]
+
 samplesnice = gsub ( "-",".", samples)
+
 expressionc[ row.names (expressionc ) %in% c(  "TP53" , "KRAS"), samplesnice ]
 
 do.these = c( "TP53", "BRCA2","PTEN", "BRCA1", "ERBB2", "EGFR"  )
@@ -573,7 +598,8 @@ k2 ( data.frame ( table ( mutations$functional_impact_score)  ), "impact scores 
 #? if you don't see any or obvious mutation where else can look at for the driver signal? 
 
 nrow ( mutations [ mutations$case_id ==  myid , ] )
-
+mutations [ mutations$case_id ==  myid & mutations$functional_impact_score == "H", ]
+table (  mutations [ mutations$case_id ==  myid , ]$functional_impact_score)
 # ? if you have more than one sample, say you want to check all 10 samples in the class, how would you do this? 
 # ? this is important, for example previously we were able to subset for Triple-negative breast tumors
 

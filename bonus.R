@@ -1,0 +1,1 @@
+nrow ( studies[ grepl("Lung Cancer", studies$name, ignore.case = T ), ] )
