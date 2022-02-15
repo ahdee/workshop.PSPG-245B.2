@@ -39,6 +39,18 @@ What does a standard genome look like? For example, 4-5 million variants in an a
 2. Basic vocabulary and concepts. 
 * Classes of somatic mutations
 
+# Breast Cancer
+  * breast cancer is the perfect dataset to study because there are a lot that is known so that we can check our results, however there is still a lot more unknown for some interesting mining. 
+  * we will start with first principle by studying public data and see what we can find that matches with what is known. 
+  * for now pretend we are the only people in the world with these dataset and there are 2 goals. 
+    + figure a general molecular profile 
+    + study the TCGA sample you were given. 
+    + https://pubmed.ncbi.nlm.nih.gov/26451490/
+
+## the goal is to get you excited about bioinformatics and show you first hand how even just a couple of hours of digging around can yield very relevant results. Have fun and feel free to reach out for questions. 
+  + Alex: alex.lee2@ucsf.edu 
+  + Henry: henry.martell@ucsf.edu
+
 # Pt mutations
 * Coding 
 * Silent
