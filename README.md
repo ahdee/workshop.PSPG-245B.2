@@ -14,6 +14,8 @@ This workshop requires R > 3.5, Rstudio and the following packages.
     + reshape2
     + gridExtra
     + ggrepel
+    + DT
+    + ggpub
 ---
 if knitr does not work try installing it from a non standard repo. 
 
