@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE )
 ```
 
 # PSPG 245B
-In this workshop you will learn about the fundamentals of how to download and utilize cancer genomic data. By the end of the course you should be able to generate your own full R markdown for your assigned TCGA ID, including plots and identification of actionable mutations. 
+In this workshop you will learn about the fundamentals of how to download and utilize cancer genomic data. By the end of the course you should be able to generate your own full R markdown for your assigned TCGA ID, including plots and identification of actionable mutations and/or gene. 
 
   * Please see the the accompanying PDF for more information.
 
@@ -35,6 +35,8 @@ Software requirements
     + reshape2
     + gridExtra
     + ggrepel
+    + DT
+    + ggpubr
     
 Please make sure to either clone the github repo or download the entire dropbox folder. Unzip this to a folder.  
 
@@ -43,7 +45,7 @@ Please make sure to either clone the github repo or download the entire dropbox 
 
 In this workshop we will be mainly using cbioportal's API to download the data we need. Thus it is important that you have access to the internet.
 
-We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015) 
+We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015), https://pubmed.ncbi.nlm.nih.gov/26451490/
 
 * Each student should had been assigned a TCGA ID prior to this.
     + TCGA-C8-A3M7-01
@@ -56,8 +58,18 @@ We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015)
 	+ TCGA-E2-A1LE-01
 	+ TCGA-E2-A1LK-01
 	+ TCGA-AC-A2FE-01
+
+
 	
 </div>
+
+# Breast Cancer
+  * breast cancer is the perfect dataset to study because there are a lot that is known about it and still a lot more unknown for some interesting mining. 
+  * we will start with first principle by studying public data and see what we can find that matches with what is known. 
+  * for now pretend we are the only people in the world with these dataset and there are 2 goals. 
+    + figure a general molecular profile 
+    + study the TCGA sample you were given. 
+    + https://pubmed.ncbi.nlm.nih.gov/26451490/
 
 <hr>
 
@@ -410,6 +422,17 @@ mutations$igv = paste ( mutations$chr, mutations$start_position, mutations$end_p
 mutations$xvar_link = gsub('getma.org','http://mutationassessor.org/r3', mutations$xvar_link)
 mutations$xvar_link_msa = gsub('getma.org','http://mutationassessor.org/r3', mutations$xvar_link_msa )
 mutations$xvar_link_pdb = gsub('getma.org','http://mutationassessor.org/r3', mutations$xvar_link_pdb  )
+
+
+cache = 1 
+if ( cache == 1){
+  saveRDS( list (
+    mutatios = mutations, 
+    expression = expression 
+    
+  ), "freeze.rds")
+}
+
 ```
 
 # Besides Mutation data we also downloaded expression RNAseq data in the form of TPM. 
@@ -575,7 +598,7 @@ ggplot(g1 , aes(x=pid, y=value, color=  value  )) +
 
 # to expressing genes
 
-```{r}
+```{r,  fig.width= 7 , fig.height=10  }
 # list of "overexpressed" genes for id 
 my.dat[my.dat> 1.96 ]
 
@@ -903,7 +926,9 @@ k2 ( head ( action[action$clinical_significance == "Sensitivity/Response" ,actio
 
 
 
-# HW at this point please use your own TCGA ID, study it using what you learn above.  Assess QC on your sample, study what genes are most common and which if any are targetable. 
+# HW at this point please use your own TCGA ID, study it using what you learn above.  Assess your sample, study what genes are most common and which if any are targetable. Study what mutations it contains and what type. 
+## Bonus, do a survival analysis looking for certain mutations or expression speficic to you sample 
+
 
 ```{r}
 # here is example where I chose, myid = "TCGA-C8-A131-01"
