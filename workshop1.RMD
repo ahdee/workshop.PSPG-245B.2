@@ -19,18 +19,19 @@ In this workshop you will learn about the fundamentals of how to download and ut
 ### this work shop will be based on a study for Invasive Breast Cancer  https://pubmed.ncbi.nlm.nih.gov/26451490/ 
 Ciriello et al, 2015. 
 
-  * breast cancer is the perfect dataset to study because there is enough that is known so that we can check our results, however there is still a lot more unknown for some interesting mining.
-  * we will start with first principle by studying public data and see what we can find that matches with what is known.
-  * we will pretend we are the only people in the world with this dataset and there are 2 goals.
-    + "discover" a general molecular profile for this dataset 
-    + study the TCGA sample you were given.
+  * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
+  * This workshop will be entirely focused on the analysis of public datasets. The data will be collected and analyzed in the context of current knowledge.
+  * The primary GOAL of this workshop is to provide you with the foundation to pursue further research projects. While there are two main goals, we hope that you will be able to use and expand upon what you learn here. In this 2-3 hour works shop we will attempt to: 
+    + "discover" a general molecular profile for the TCGA Breast Cancer dataset.  
     + https://pubmed.ncbi.nlm.nih.gov/26451490/
+    + Each participant has been assigned a TCGA patient identifier for this dataset, and your task is to use the tools provided in this workshop to gather as much information as possible. Atthe end of the workshop you should have a complete report for your assigned sample. 
 
-### the goal really is to get you excited about bioinformatics and show you first hand how how much we can get just from a couple of hours of digging around can yield very relevant results. Have fun and feel free to reach out for questions.
+
+### Wile the assignment is an important aspect of this workshop, the primary objective is to spark your enthusiasm for bioinformatics and illustrate the depth of information that can be obtained even with a cursory examination of data. The potential is limitless, so feel free to ask questions and embrace the learning experience. We encourage you to fully participate and take advantage of this. Contact information below. 
   + Alex: alex.lee2@ucsf.edu
   + Henry: henry.martell@ucsf.edu
 
-### we assume that you are at least familiar with R at the basic level, if not is fine as well, and we will guide you as needed. 
+### It is assumed that you have a basic understanding of R, but if not, that's okay. We will provide guidance and support as needed throughout the workshop.
 
 ## The following are required for this workshop
 <div style="background-color:#b6d2db">
@@ -57,7 +58,7 @@ Please make sure to either clone the github repo or download the entire dropbox 
 * https://github.com/ahdee/workshop.PSPG-245B.2.git
 * https://github.com/ahdee/workshop.PSPG-245B.2/archive/refs/heads/master.zip
 
-In this workshop we will be mainly using cbioportal's API to download the data we need. Thus it is important that you have access to the internet.
+In this workshop, we will primarily utilize the cBioPortal API to obtain the necessary data. It is therefore important that you have an internet connection.
 
 We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015), https://pubmed.ncbi.nlm.nih.gov/26451490/
 
@@ -80,7 +81,7 @@ We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015), 
 
 <hr>
 
-<font color="red"> Important: please remember to set the working directory to your source by clicking Sesssion-> Set working directory -> to source file location</font>
+<font color="red"> IMPORTANT: please remember to set the working directory to your source by clicking Sesssion-> Set working directory -> to source file location</font>
 
 ```{r, include=T, echo=T, message=FALSE, warning=FALSE, fig=TRUE}
 
@@ -117,7 +118,7 @@ cbiop = CGDS("http://www.cbioportal.org/")
     + Identify the study you want
     + List all the "cases" for that study, a case is a description of both data available for the study and/or subsets of certain phenotypes
 	+ With each case you can get the list of all the associated TCGA identify
-	+ which you can then use to get all the clincal data assocaited with the TCGA samples. 
+	+ which you can then use to get all the clinical data associated with the TCGA samples. 
 	+ moreover you use the study to get specific genetic profile ( datasets available for downloading ). 
 	+ From here you can then download the actual data. 
 
@@ -178,13 +179,15 @@ brca.study = "brca_tcga_pub2015"
 mycaselist = getCaseLists(cbiop,brca.study)
 
 
-# note: the descriptions contains not only type of samples but sometimes it includes what type of data they are.  
 
-View ( mycaselist)
-k2 (mycaselist[ , 1:3] )
+
 # qqq: Which case do you think is most relevant for this workshop? 
 # hint: look through the case_list_name
 # hint: the last column which was not displayed are all the TCGA ids associated with the each of the case 
+# note: the descriptions contains not only type of samples but sometimes it includes what type of data they are.  
+k2 (mycaselist[ , 1:3] )
+View ( mycaselist)
+
 
 # X how would you get only samples labeled as 	Her2-positive breast tumors
 
@@ -213,7 +216,7 @@ mysample = unlist ( strsplit(mysample, " ") )
 
 
 # here is the list of samples we stored in the auxillary. Do you see your sample in here? 
-
+## important. Do you see your sample? 
 cat ( samples, sep="\n")
 ```
 
@@ -225,6 +228,7 @@ cat ( samples, sep="\n")
 # qqq mysample variable now contains all the TCGA samples in this study, can you check if your sample is exists? 
 
 myid = "TCGA-C8-A131-01"
+
 mysample[mysample== myid]
 
 # here is another way
@@ -234,7 +238,7 @@ mysample[grepl(myid, mysample)]
 
 
 
-### Now lets check if it matches with what is reported: 817 
+### Now lets check if it matches with what is reported: 818 
 length ( mysample)
 ```
 
@@ -284,7 +288,7 @@ er_POS = unlist ( strsplit(er_POS, " ") )
 # answer. 
 t3[t3==myid]
 her2p[her2p==myid]
-
+er_POS[er_POS==myid]
 # X: suppose you ask how many are HER2 positive but also ER +? 
 
 venn1 = data.frame ( her2p= length ( her2p)
@@ -450,7 +454,7 @@ if ( cache == 1){
 
 ```{r fig=TRUE,fig.width=12, fig.height=12}
 
-expressionc = df2 <-expression  %>% 
+expressionc <-expression  %>% 
     select(where(~!all(is.na(.)))) %>% data.frame()
 
 expressionc= data.frame ( log2 ( expressionc + 1 ))
@@ -653,6 +657,8 @@ names ( mutations )
 
 
 unique( mutations$mutation_type)
+
+#################### back to lecture 
 
 # qqq based on the lecture previously can identify the different mutation_type
 # qqq based on the lecture previously can you figure out what each of these mean?  
