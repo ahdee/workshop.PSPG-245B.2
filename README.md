@@ -19,17 +19,15 @@ This workshop requires R > 3.5, Rstudio and the following packages.
     + clusterProfiler
     + DOSE
     + org.Hs.eg.db
----
+
 if knitr does not work try installing it from a non standard repo. 
-
 install.packages('knitr', repos = c('https://xran.yihui.name', 'https://cran.r-project.org')
-
 If that still does not work, for example, for kableExtra then you can try looking for the git repo and use the devtools package: 
+
 Example: 
-
-devtools::install_github("haozhu233/kableExtra")
-
-Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required. 
+```devtools::install_github("haozhu233/kableExtra")```
+Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required.
+ 
 ---
 
 # Overview
