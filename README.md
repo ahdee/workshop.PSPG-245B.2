@@ -1,4 +1,4 @@
-# Workshop
+# Requirements
 
 ** please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 
@@ -44,6 +44,31 @@ In this workshop, you will be introduced to the fundamentals of downloading and 
 2. Basic vocabulary and concepts. 
 * Classes of somatic mutations
 
+3. Mutations 
+* Coding 
+* Silent
+* Missense
+* Nonsense
+* Noncoding ( UTR ) 
+* Intronic
+* Intergenic
+* Splice site variants?
+
+4. Small regional mutations
+
+* Insertion
+* Deletions
+* Duplications
+
+5. Deciphering nomenclature of sequence variations.
+
+6. Identifying functionally relevant mutations - passenger vs driver
+How RNA and DNA sequencing data can be integrated to find functional variants?
+Variant prediction tools – e.g. CADD scores, and other methods
+Comparison to known cancer genes or even known cancer causing variants
+Pathway analysis – how this leads in to the design/search of drugs
+Structural biology for coding variants
+
 # Breast Cancer
   * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
   * This workshop will be entirely focused on the analysis of public datasets. The data will be collected and analyzed in the context of current knowledge.
@@ -55,35 +80,7 @@ In this workshop, you will be introduced to the fundamentals of downloading and 
 ## Wile the assignment is an important aspect of this workshop, the primary objective is to spark your enthusiasm for bioinformatics and illustrate the depth of information that can be obtained even with a cursory examination of data. The potential is limitless, so feel free to ask questions and embrace the learning experience. We encourage you to fully participate and take advantage of this. Contact information in class notes. 
   
 
-# Pt mutations
-* Coding 
-* Silent
-* Missense
-* Nonsense
-* Noncoding ( UTR ) 
-* Intronic
-* Intergenic
-* Splice site variants?
-
-# Small regional mutations
-* Insertion
-* Deletions
-* Duplications
-
-3. Deciphering nomenclature of sequence variations.
-
-What is his section? Is this deciphering single letter vs three letter mutatioion codes etc.?
-
-
-4. Identifying functionally relevant mutations - passenger vs driver
-How RNA and DNA sequencing data can be integrated to find functional variants?
-Variant prediction tools – e.g. CADD scores, and other methods
-Comparison to known cancer genes or even known cancer causing variants
-Pathway analysis – how this leads in to the design/search of drugs
-Structural biology for coding variants
-
-
-Workshop ( this will constitute the bulk of the time spent )
+# Hands on Workshop ( this will constitute the bulk of the time spent )
 
 * We will start off with basic data mining.  To begin with will learn how to directly download mutation data from R.  There are many sources and API's however here will be using  cbioportal. 
 * Although this is not a course in R per se, but you will learn how to manipulate/wrangle a the mutation data.frame.  
