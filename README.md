@@ -36,10 +36,10 @@ In this workshop, you will be introduced to the fundamentals of downloading and 
 
 ## 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
 
-    * Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
-    * Standard pipelines to go from reads to actionable information
-    * The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
-    * What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
+* Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
+* Standard pipelines to go from reads to actionable information
+* The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
+* What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
 
 
 ## 2. Basic vocabulary and concepts. 
