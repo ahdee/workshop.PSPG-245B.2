@@ -16,6 +16,9 @@ This workshop requires R > 3.5, Rstudio and the following packages.
     + ggrepel
     + DT
     + ggpub
+    + clusterProfiler
+    + DOSE
+    + org.Hs.eg.db
 ---
 if knitr does not work try installing it from a non standard repo. 
 
@@ -26,9 +29,10 @@ Finally if kableExtra is having issues install the devtools packages first then 
 
 devtools::install_github("haozhu233/kableExtra")
 
+Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required. 
 ---
 
-In this workshop you will learn about the fundamentals of mutation identification in cancer.  This will include the following. 
+In this workshop you will learn about the fundamentals of how to download and utilize cancer genomic data. By the end of the course you should be able to generate your own full R markdown for your assigned TCGA ID, including plots and identification of actionable mutations and/or gene.
 
 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
 Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
@@ -40,16 +44,15 @@ What does a standard genome look like? For example, 4-5 million variants in an a
 * Classes of somatic mutations
 
 # Breast Cancer
-  * breast cancer is the perfect dataset to study because there are a lot that is known so that we can check our results, however there is still a lot more unknown for some interesting mining. 
-  * we will start with first principle by studying public data and see what we can find that matches with what is known. 
-  * for now pretend we are the only people in the world with these dataset and there are 2 goals. 
-    + figure a general molecular profile 
-    + study the TCGA sample you were given. 
+  * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
+  * This workshop will be entirely focused on the analysis of public datasets. The data will be collected and analyzed in the context of current knowledge.
+  * The primary GOAL of this workshop is to provide you with the foundation to pursue further research projects. While there are two main goals, we hope that you will be able to use and expand upon what you learn here. In this 2-3 hour works shop we will attempt to: 
+    + "discover" a general molecular profile for the TCGA Breast Cancer dataset.  
     + https://pubmed.ncbi.nlm.nih.gov/26451490/
+    + Each participant has been assigned a TCGA patient identifier for this dataset, and your task is to use the tools provided in this workshop to gather as much information as possible. Atthe end of the workshop you should have a complete report for your assigned sample. 
 
-## the goal is to get you excited about bioinformatics and show you first hand how even just a couple of hours of digging around can yield very relevant results. Have fun and feel free to reach out for questions. 
-  + Alex: alex.lee2@ucsf.edu 
-  + Henry: henry.martell@ucsf.edu
+## Wile the assignment is an important aspect of this workshop, the primary objective is to spark your enthusiasm for bioinformatics and illustrate the depth of information that can be obtained even with a cursory examination of data. The potential is limitless, so feel free to ask questions and embrace the learning experience. We encourage you to fully participate and take advantage of this. Contact information in class notes. 
+  
 
 # Pt mutations
 * Coding 
