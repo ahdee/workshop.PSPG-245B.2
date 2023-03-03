@@ -68,6 +68,8 @@ Comparison to known cancer genes or even known cancer causing variants
 Pathway analysis – how this leads in to the design/search of drugs
 Structural biology for coding variants
 
+7. We will also do a quick overview of RNAseq and how to utilize it to find genes of interests as well as go over the fundamentals of pathway analysis. 
+
 # Breast Cancer
   * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
   * This workshop will be entirely focused on the analysis of public datasets. The data will be collected and analyzed in the context of current knowledge.
@@ -81,18 +83,19 @@ Structural biology for coding variants
 
 # Hands on Workshop ( this will constitute the bulk of the time spent )
 
-* We will start off with basic data mining.  To begin with will learn how to directly download mutation data from R.  There are many sources and API's however here will be using  cbioportal. 
-* Although this is not a course in R per se, but you will learn how to manipulate/wrangle a the mutation data.frame.  
-* Subset type of mutations.  
-* Aggregate by attributes such as types of mutations. 
-* Query ( eg. for specific variants ) 
-* Tabulate mutations ( eg. frequency tables ) . 
-* How to identify what could be potentially be pathogenic and cross reference it with existing data. 
-* How to take existing mutation data and predict possible actionable targets for either druggability, diagnostic or prognosis. 
-* You will also learn a few ways to plot the data. 
-* Basic plotting of your mutation table. 
-* How to generate figures to look for total burden across different chromosome/regions.
-* Potentially – how to analyse mutational signatures (if there is time)
+* We will start with basic data mining. To kick off, we will learn how to directly download public datasets using R. There are various sources and APIs available, but in this workshop, we will be utilizing cBioPortal
+* Although this workshop is not an R course, we will cover the basics of the language and how to handle datasets, as well as create basic plots such as, 
+
+    + Subset type of mutations.  
+    + Aggregate by attributes such as types of mutations. 
+    + Query ( eg. for specific variants ) 
+    + Tabulate mutations ( eg. frequency tables ) . 
+    + How to identify what could be potentially be pathogenic and cross reference it with existing data. 
+    + How to take existing mutation data and predict possible actionable targets for either druggability, diagnostic or prognosis. 
+    + You will also learn a few ways to plot the data. 
+    + Basic plotting of your mutation table. 
+    + How to generate figures to look for total burden across different chromosome/regions.
+    + In addition we will cover the basics of RNAseq and how to do basic comparisons, pathway analysis, correlations as well identify outliers for single sample. 
 
 
 
