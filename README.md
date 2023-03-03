@@ -32,7 +32,8 @@ devtools::install_github("haozhu233/kableExtra")
 Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required. 
 ---
 
-In this workshop you will learn about the fundamentals of how to download and utilize cancer genomic data. By the end of the course you should be able to generate your own full R markdown for your assigned TCGA ID, including plots and identification of actionable mutations and/or gene.
+# Overview
+In this workshop, you will be introduced to the fundamentals of downloading and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown for your assigned TCGA ID, featuring plots and the identification of impactful mutations and/or genes. We will be covering the following concepts. 
 
 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
 Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
