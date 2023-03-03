@@ -145,4 +145,18 @@ venn.this <- function (data1, cp = c("#a6cee3","#fdbf6f","#b2df8a"), type= 3, dg
 
 frozen = readRDS("freeze.2020")
 
+
+
+
+wtest <- function ( x) {
+  wp = wilcox.test(as.numeric ( x[last_j] ) , as.numeric ( x[last_b] ), alternative = "two.sided")
+  wp = wp$p.value
+  logfc = mean ( as.numeric ( x[last_j] ) ) - mean ( as.numeric ( x[last_b] ) )
+  her2_mean = mean ( as.numeric ( x[last_j] ) ) 
+  base_mean = mean ( as.numeric ( x[last_b] ) ) 
+  all_mean = mean ( as.numeric ( x ) ) 
+  c(wp, logfc, her2_mean,base_mean, all_mean )
+}
+
+
 #
