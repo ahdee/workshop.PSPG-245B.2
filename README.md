@@ -26,7 +26,8 @@ If that still does not work, for example, for kableExtra then you can try lookin
 
 Example: 
 ```devtools::install_github("haozhu233/kableExtra")```
-Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required.
+
+* Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required.
  
 ---
 
