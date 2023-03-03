@@ -24,8 +24,8 @@ if knitr does not work try installing it from a non standard repo.
 
 install.packages('knitr', repos = c('https://xran.yihui.name', 'https://cran.r-project.org')
 
-
-Finally if kableExtra is having issues install the devtools packages first then try to compile it yourself. 
+If that still does not work, for example, for kableExtra then you can try looking for the git repo and use the devtools package: 
+Example: 
 
 devtools::install_github("haozhu233/kableExtra")
 
