@@ -1,4 +1,4 @@
-# workshop
+# Workshop
 
 ** please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 
@@ -36,10 +36,10 @@ Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or 
 In this workshop, you will be introduced to the fundamentals of downloading and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown for your assigned TCGA ID, featuring plots and the identification of impactful mutations and/or genes. We will be covering the following concepts. 
 
 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
-Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
-Standard pipelines to go from reads to actionable information
-The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
-What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
+    + Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
+    + Standard pipelines to go from reads to actionable information
+    + The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
+    + What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
 
 2. Basic vocabulary and concepts. 
 * Classes of somatic mutations
