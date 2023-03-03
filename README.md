@@ -1,6 +1,6 @@
 # workshop
 
-** please remember to set the working directory to your source by clicking Sesssion-> Set working directory -> to source file location
+** please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 
 This workshop requires R > 3.5, Rstudio and the following packages. 
 
