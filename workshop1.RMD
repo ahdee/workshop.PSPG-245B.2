@@ -149,7 +149,7 @@ nrow ( studies ) # nrow tells you how many rows
 ## we can use the grepl function which uses regular expression to search within objects and returns a 
 ## a vector of T and F 
 
-grepl("Breast", studies$name, ignore.case = T )
+grepl("Breast", studies$name, ignore.case = T )[1:3]
 
 ## an index is position in a vector, eg apple, pear, peach, 
 studies$name [grepl("Breast", studies$name, ignore.case = T ) ]
@@ -164,7 +164,7 @@ studies$name [grepl("Breast", studies$name, ignore.case = T ) ]
 
 
 breast = studies[ grepl("Breast", studies$name, ignore.case = T ), ]
-k2(breast , "all breast cancer studies")
+datatable(breast )
 
 # QQQ can you tell which is the study id you need  -
 # we can be more specific here
@@ -192,7 +192,7 @@ mycaselist = getCaseLists(cbiop,brca.study)
 # hint: the last column which was not displayed are all the TCGA ids associated with the each of the case 
 # note: the descriptions contains not only type of samples but sometimes it includes what type of data they are.  
 k2 (mycaselist[ , 1:3] )
-View ( mycaselist)
+# View ( mycaselist)
 
 
 # X how would you get only samples labeled as 	Her2-positive breast tumors
@@ -220,7 +220,7 @@ mysample = mycaselist[ mycaselist$case_list_id == case.list.id, ]$case_ids
 # lets spit it up into a nice vector by delimiting space
 mysample = unlist ( strsplit(mysample, " ") )
 
-k2 ( mysample )
+#k2 ( mysample )
 
 # here is the list of samples that were assigned. 
 ## important. Do you see your sample? 
@@ -262,7 +262,7 @@ myclinicaldata$pid = gsub ( "\\.", "-", row.names(myclinicaldata))
 # lets look through the clinical data and see what info do we have. 
 # QQQ can you think of any usage for these data? 
 
-k2 ( t ( myclinicaldata[myclinicaldata$pid %in% myid, ] ))
+datatable ( t ( myclinicaldata[myclinicaldata$pid %in% myid, ] ))
 
 # important fields to consider. 
 # AGE, AJCC_PATHOLOGIC_TUMOR_STAGE, Ethnicity
@@ -736,12 +736,12 @@ action = drug[ drug$match %in% unique ( mutations$drug  ), ]
 action.f = c("gene" ,"variant" , "disease", "drugs", "evidence_type", 
              "clinical_significance", "evidence_statement", "evidence_civic_url", "gene_civic_url" , "match"
 )
-k2 ( head ( action[ ,action.f], 20) ,"example of actionable mutations in the BRCA set" )
+datatable ( head ( action[ ,action.f], 10)  )
 
 # X can you figure out which samples have druggable targets?  
 # hint look at evidence type. Can yo figure out which of these are diagnostic vs targetable? 
 
-k2 ( head ( action[action$clinical_significance == "Sensitivity/Response" ,action.f], 20) )
+datatable ( head ( action[action$clinical_significance == "Sensitivity/Response" ,action.f], 10) )
 
 
 
@@ -818,7 +818,7 @@ glist = setNames( results$logfc, results$gene)
 glist = sort(glist, decreasing = TRUE)
 ```
 
-```{r}
+```{r, echo=FALSE, include=FALSE}
 
 library(clusterProfiler)
 library (DOSE)
