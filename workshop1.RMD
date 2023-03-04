@@ -149,7 +149,7 @@ nrow ( studies ) # nrow tells you how many rows
 ## we can use the grepl function which uses regular expression to search within objects and returns a 
 ## a vector of T and F 
 
-grepl("Breast", studies$name, ignore.case = T )[1:3]
+grepl("Breast", studies$name, ignore.case = T )[15:20]
 
 ## an index is position in a vector, eg apple, pear, peach, 
 studies$name [grepl("Breast", studies$name, ignore.case = T ) ]
@@ -164,12 +164,12 @@ studies$name [grepl("Breast", studies$name, ignore.case = T ) ]
 
 
 breast = studies[ grepl("Breast", studies$name, ignore.case = T ), ]
-datatable(breast )
+DT::datatable(breast )
 
 # QQQ can you tell which is the study id you need  -
 # we can be more specific here
 ## Breast Invasive Carcinoma (TCGA, Cell 2015)
-datatable ( studies[ grepl("Breast Invasive Carcinoma", studies$name, ignore.case = T )  , ] )
+DT::datatable ( studies[ grepl("Breast Invasive Carcinoma", studies$name, ignore.case = T )  , ] )
 
 
 
@@ -262,7 +262,7 @@ myclinicaldata$pid = gsub ( "\\.", "-", row.names(myclinicaldata))
 # lets look through the clinical data and see what info do we have. 
 # QQQ can you think of any usage for these data? 
 
-datatable ( t ( myclinicaldata[myclinicaldata$pid %in% myid, ] ))
+DT::datatable ( t ( myclinicaldata[myclinicaldata$pid %in% myid, ] ))
 
 # important fields to consider. 
 # AGE, AJCC_PATHOLOGIC_TUMOR_STAGE, Ethnicity
@@ -645,7 +645,7 @@ mutations = mutations[ order ( - mutations$af ) , ]
 # clean mut head
 cleanmut = c ("gene_symbol", "mutation_type", "amino_acid_change", "reference_allele", "variant_allele" , "reference_read_count_tumor", "variant_read_count_tumor" , "dp", "af")  
 
-datatable ( head ( mutations [ , c( cleanmut )]) )
+DT::datatable ( head ( mutations [ , c( cleanmut )]) )
 
 
 
@@ -736,12 +736,12 @@ action = drug[ drug$match %in% unique ( mutations$drug  ), ]
 action.f = c("gene" ,"variant" , "disease", "drugs", "evidence_type", 
              "clinical_significance", "evidence_statement", "evidence_civic_url", "gene_civic_url" , "match"
 )
-datatable ( head ( action[ ,action.f], 10)  )
+DT::datatable ( head ( action[ ,action.f], 10)  )
 
 # X can you figure out which samples have druggable targets?  
 # hint look at evidence type. Can yo figure out which of these are diagnostic vs targetable? 
 
-datatable ( head ( action[action$clinical_significance == "Sensitivity/Response" ,action.f], 10) )
+DT::datatable ( head ( action[action$clinical_significance == "Sensitivity/Response" ,action.f], 10) )
 
 
 
