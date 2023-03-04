@@ -34,16 +34,19 @@ Example:
 # Overview
 In this workshop, you will be introduced to the fundamentals of downloading and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown for your assigned TCGA ID, featuring plots and the identification of impactful mutations and/or genes. We will be covering the following concepts. 
 
-1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
-    + Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
-    + Standard pipelines to go from reads to actionable information
-    + The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
-    + What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
+## 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
 
-2. Basic vocabulary and concepts. 
+* Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
+* Standard pipelines to go from reads to actionable information
+* The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
+* What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
+
+
+## 2. Basic vocabulary and concepts. 
+
 * Classes of somatic mutations
 
-3. Mutations 
+## 3. Mutations 
 * Coding 
 * Silent
 * Missense
@@ -53,22 +56,22 @@ In this workshop, you will be introduced to the fundamentals of downloading and 
 * Intergenic
 * Splice site variants?
 
-4. Small regional mutations
+## 4. Small regional mutations
 
 * Insertion
 * Deletions
 * Duplications
 
-5. Deciphering nomenclature of sequence variations.
+## 5. Deciphering nomenclature of sequence variations.
 
-6. Identifying functionally relevant mutations - passenger vs driver
+## 6. Identifying functionally relevant mutations - passenger vs driver
 How RNA and DNA sequencing data can be integrated to find functional variants?
 Variant prediction tools – e.g. CADD scores, and other methods
 Comparison to known cancer genes or even known cancer causing variants
 Pathway analysis – how this leads in to the design/search of drugs
 Structural biology for coding variants
 
-7. We will also do a quick overview of RNAseq and how to utilize it to find genes of interests as well as go over the fundamentals of pathway analysis. 
+## 7. We will also do a quick overview of RNAseq and how to utilize it to find genes of interests as well as go over the fundamentals of pathway analysis. 
 
 # Breast Cancer
   * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
