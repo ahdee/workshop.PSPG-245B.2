@@ -21,14 +21,13 @@
 
     <details>
       <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
-      ## 
+      
       ```
         
-       
-       
-        devtools::install_github("cBioPortal/cgdsr")
         if(!require(devtools)) { install.packages("devtools") }
         if(!require(BiocManager)) { install.packages("BiocManager") }
+        devtools::install_github("cBioPortal/cgdsr")
+        
         BiocManager::install(c("ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
                               "gridExtra", "ggrepel", "DT", "ggpubr", 
                               "clusterProfiler", "DOSE", "org.Hs.eg.db"))
