@@ -7,7 +7,7 @@
         <summary>The following R packages </summary>
         
         ### Bioinformatics and Genomics
-        1. **cgdsr**: An API interface to the Cancer Genomics Data Server (CGDS) which provides functions for accessing and retrieving data from the CGDS.
+        1. **cBioPortalData** ~cgdsr~: An API interface to the Cancer Genomics Data Server (CGDS) which provides functions for accessing and retrieving data from the CGDS.
         2. **clusterProfiler**: Statistical analysis and visualization of functional profiles for genes and gene clusters.
         3. **DOSE**: package for Disease Ontology Semantic and Enrichment analysis.
         4. **org.Hs.eg.db**: Genome wide annotation for Human, primarily based on mapping using Entrez Gene identifiers.
@@ -38,9 +38,10 @@
         
         if(!require(devtools)) { install.packages("devtools") }
         if(!require(BiocManager)) { install.packages("BiocManager") }
-        devtools::install_github("cBioPortal/cgdsr")
+        # this version is now obsolete ( leaving here as reminder to always save local copies )  
+        # devtools::install_github("cBioPortal/cgdsr")
         
-        BiocManager::install(c("ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
+        BiocManager::install(c( "cBioPortalData", "ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
                               "gridExtra", "ggrepel", "DT", "ggpubr", 
                               "clusterProfiler", "DOSE", "org.Hs.eg.db"))
     ```
@@ -60,14 +61,14 @@
 ---
 
 # Overview
-In this workshop, you will be introduced to the fundamentals of downloading and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown for your assigned TCGA ID, featuring plots and the identification of impactful mutations and/or genes. We will be covering the following concepts. 
+In this workshop, you will be introduced to the fundamentals of aquiring and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown report for your assigned TCGA ID, featuring plots and identifying impactful mutations and/or genes. The following concepts will be covered: 
 
-## 1. Basic bioinformatic workflow: from sample to identifying potentially targetable mutations. 
+## 1. Basic Bioinformatic Workflow: From Sample to Identifying Potentially Targetable Mutations
 
-* Types of sequencing, e.g. WES and WGS, and also DNA vs RNA
-* Standard pipelines to go from reads to actionable information
-* The size of modern data sets (TCGA) and their current applications, e.g. in healthcare
-* What does a standard genome look like? For example, 4-5 million variants in an average genome compared to the reference human genome. Then this can lead in to talking about germline vs somatic mutations, and how this is crucial for studying cancer 
+* Different types of sequencing, such as Whole Exome Sequencing (WES) and Whole Genome Sequencing (WGS), as well as the distinction between DNA and RNA sequencing.
+* Standard pipelines for processing sequencing reads into actionable information.
+* The scale of modern datasets like TCGA and their applications in healthcare.
+* Understanding a standard genome: For example, an average genome may exhibit 4-5 million variants compared to the reference human genome. This leads to discussions about germline vs. somatic mutations, which are crucial in cancer studies.
 
 
 ## 2. Basic vocabulary and concepts. 
