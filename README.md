@@ -22,11 +22,9 @@
     <details>
       <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
       ```
-        # first make sure that both BiocManager and 
-        # Install the necessary packages using BiocManager and devtools are installed. 
         if(!require(devtools)) { install.packages("devtools") }
         if(!require(BiocManager)) { install.packages("BiocManager") }
-        # from here install the following packages 
+       
         devtools::install_github("cBioPortal/cgdsr")
 
         BiocManager::install(c("ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
