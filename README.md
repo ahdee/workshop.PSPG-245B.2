@@ -3,8 +3,10 @@
 ** please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 
 This workshop requires R > 3.5, Rstudio and the following packages. 
-
+* on windows please also install RTools: https://cran.r-project.org/bin/windows/Rtools/
 * use BiocManager::install() when possible. 
+    + If you don't have BiocManager install then please install it first. 
+      + `install.packages("BiocManager")`
     + cgdsr
     + ggplot2
     + knitr
