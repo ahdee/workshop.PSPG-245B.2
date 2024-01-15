@@ -48,14 +48,14 @@
 
 
 ---
-## Tips to Ensure Everything Is Ready
+## Get Set Up: Ensuring a Smooth Start
 
 * Install R and RStudio.
 * Open RStudio and make sure R is running correctly.
 * Install all the required R packages.
 * __Remember to set the working directory to your source directory.__ Do this by clicking on the top menu:
   + Session -> Set Working Directory -> To Source File Location.
-
+* Ensure that you receive your assigned TCGA ID, as each student will be provided with one. This ID will be used for applying the skills and knowledge you acquire during this workshop to create a report. Additionally, it's important to note that this same TCGA ID may be required for future workshops as well. 
 
 ---
 
