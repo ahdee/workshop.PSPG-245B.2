@@ -24,11 +24,11 @@
       ## 
       ```
         
-       if(!require(devtools)) { install.packages("devtools") }
-       if(!require(BiocManager)) { install.packages("BiocManager") }
+       
        
         devtools::install_github("cBioPortal/cgdsr")
-
+        if(!require(devtools)) { install.packages("devtools") }
+        if(!require(BiocManager)) { install.packages("BiocManager") }
         BiocManager::install(c("ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
                               "gridExtra", "ggrepel", "DT", "ggpubr", 
                               "clusterProfiler", "DOSE", "org.Hs.eg.db"))
