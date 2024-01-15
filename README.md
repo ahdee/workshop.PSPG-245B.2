@@ -3,23 +3,35 @@
     * R > 4.0 
       + note in Windows please also install on windows please also install RTools: https://cran.r-project.org/bin/windows/Rtools/
     * Rstudio
-    * And the following packages
-      + cgdsr
-      + ggplot2
-      + knitr
-      + kableExtra
-      + dplyr
-      + VennDiagram
-      + reshape2
-      + gridExtra
-      + ggrepel
-      + DT
-      + ggpubr
-      + clusterProfiler
-      + DOSE
-      + org.Hs.eg.db
+      <details>
+        <summary>The following R packages </summary>
+        
+        ### Bioinformatics and Genomics
+        1. **cgdsr**: An API interface to the Cancer Genomics Data Server (CGDS) which provides functions for accessing and retrieving data from the CGDS.
+        2. **clusterProfiler**: Statistical analysis and visualization of functional profiles for genes and gene clusters.
+        3. **DOSE**: package for Disease Ontology Semantic and Enrichment analysis.
+        4. **org.Hs.eg.db**: Genome wide annotation for Human, primarily based on mapping using Entrez Gene identifiers.
+        
+        ### Data Visualization
+        1. **ggplot2**: creating graphics, based on The Grammar of Graphics.
+        2. **VennDiagram**: Generates Venn and Euler plots.
+        3. **gridExtra**: Provides functions to arrange multiple grid-based plots on a page.
+        4. **ggrepel**: Provides geoms for ggplot2 to repel overlapping text labels.
+        5. **ggpubr**: 'ggplot2' Based Publication Ready Plots.
+        
+        ### Data Manipulation and Analysis
+        1. **dplyr**: Provides functions for the most common data manipulation.
+        2. **reshape2**: Reshaping data.
+        3. **DT**: Provides an interface to the JavaScript library DataTables to display R data as interactive HTML tables.
+        
+        ### Reporting and Documentation
+        1. **knitr**: Provides a general-purpose tool for dynamic report generation in R using Literate Programming techniques.
+        2. **kableExtra**: Provides complex tables with merged cells, and enhanced styles.
 
-    <details>
+      </details>
+
+    ## Code Instructions
+    <details> R packages
       <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
       
       ```
@@ -35,9 +47,16 @@
     </details>
 
 
+---
+## Tips to Ensure Everything Is Ready
+
+* Install R and RStudio.
+* Open RStudio and make sure R is running correctly.
+* Install all the required R packages.
+* __Remember to set the working directory to your source directory.__ Do this by clicking on the top menu:
+  + Session -> Set Working Directory -> To Source File Location.
 
 
-  * Also remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 ---
 
 # Overview
