@@ -1,7 +1,7 @@
 # Requirements
-  * It is important that you have the following installed on your computer before the workshop. 
+  * It is important that you have the following installed on your computer before the workshop:
     * R > 4.0 
-      + note in Windows please also install on windows please also install RTools: https://cran.r-project.org/bin/windows/Rtools/
+      + Note in Windows, please also install RTools: <a href="https://cran.r-project.org/bin/windows/Rtools/">link</a>
     * Rstudio
       <details>
         <summary>The following R packages </summary>
@@ -30,9 +30,9 @@
 
       </details>
 
-    ## Code Instructions
-    <details> R packages
-      <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
+    ## Package installation instructions.  
+    <details> 
+      <summary>Code</summary>
       
       ```
         
