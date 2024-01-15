@@ -21,9 +21,11 @@
 
     <details>
       <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
+      ## 
       ```
-        if(!require(devtools)) { install.packages("devtools") }
-        if(!require(BiocManager)) { install.packages("BiocManager") }
+        
+       if(!require(devtools)) { install.packages("devtools") }
+       if(!require(BiocManager)) { install.packages("BiocManager") }
        
         devtools::install_github("cBioPortal/cgdsr")
 
