@@ -1,36 +1,43 @@
 # Requirements
+  * It is important that you have the following installed on your computer before the workshop. 
+    * R > 4.0 
+      + note in Windows please also install on windows please also install RTools: https://cran.r-project.org/bin/windows/Rtools/
+    * Rstudio
+    * And the following packages
+    <details>
+      <summary>Please expand the following code block for instructions as to how to install R packages.</summary>
+    ```R
+      # first make sure that both BiocManager and 
+      # Install the necessary packages using BiocManager and devtools are installed. 
+      if(!require(devtools)) { install.packages("devtools") }
+      if(!require(BiocManager)) { install.packages("BiocManager") }
+      # from here install the following packages 
+      devtools::install_github("cBioPortal/cgdsr")
 
-** please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
+      BiocManager::install(c("ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
+                            "gridExtra", "ggrepel", "DT", "ggpubr", 
+                            "clusterProfiler", "DOSE", "org.Hs.eg.db"))
+    ```
+    </details>
+    * Pacakges 
+      + cgdsr
+      + ggplot2
+      + knitr
+      + kableExtra
+      + dplyr
+      + VennDiagram
+      + reshape2
+      + gridExtra
+      + ggrepel
+      + DT
+      + ggpubr
+      + clusterProfiler
+      + DOSE
+      + org.Hs.eg.db
 
-This workshop requires R > 3.5, Rstudio and the following packages. 
-* on windows please also install RTools: https://cran.r-project.org/bin/windows/Rtools/
-* use BiocManager::install() when possible. 
-    + If you don't have BiocManager install then please install it first. 
-      + `install.packages("BiocManager")`
-    + cgdsr
-    + ggplot2
-    + knitr
-    + kableExtra
-    + dplyr
-    + VennDiagram
-    + reshape2
-    + gridExtra
-    + ggrepel
-    + DT
-    + ggpub
-    + clusterProfiler
-    + DOSE
-    + org.Hs.eg.db
 
-if knitr does not work try installing it from a non standard repo. 
-install.packages('knitr', repos = c('https://xran.yihui.name', 'https://cran.r-project.org')
-If that still does not work, for example, for kableExtra then you can try looking for the git repo and use the devtools package: 
 
-Example: 
-```devtools::install_github("haozhu233/kableExtra")```
-
-* Moroever you may have some issues with install org.Hs.eg.db, clusterProfiler or DOSE if so please ignore it since it is recommended but not required.
- 
+  * please remember to set the working directory to your source direcotry by clicking Sesssion-> Set working directory -> to source file location
 ---
 
 # Overview
