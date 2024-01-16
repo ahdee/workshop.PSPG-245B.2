@@ -11,6 +11,7 @@
         2. **clusterProfiler**: Statistical analysis and visualization of functional profiles for genes and gene clusters.
         3. **DOSE**: package for Disease Ontology Semantic and Enrichment analysis.
         4. **org.Hs.eg.db**: Genome wide annotation for Human, primarily based on mapping using Entrez Gene identifiers.
+        5. **qpcR**: functions for qPCR.  
         
         ### Data Visualization
         1. **ggplot2**: creating graphics, based on The Grammar of Graphics.
@@ -43,7 +44,7 @@
         # devtools::install_github("cBioPortal/cgdsr")
         
         BiocManager::install(c( "cBioPortalData", "ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
-                              "gridExtra", "ggrepel", "DT", "ggpubr", 
+                              "gridExtra", "ggrepel", "DT", "ggpubr", "qpcR",
                               "clusterProfiler", "DOSE", "org.Hs.eg.db"))
     ```
     </details>
