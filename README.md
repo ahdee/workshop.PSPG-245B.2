@@ -1,4 +1,4 @@
-# Requirements
+# PSPG 245B: Requirements
   * It is important that you have the following installed on your computer before the workshop:
     * R > 4.0 
       + Note in Windows, please also install RTools: <a href="https://cran.r-project.org/bin/windows/Rtools/">link</a>
@@ -63,7 +63,7 @@
 ---
 
 # Overview
-In this workshop, you will be introduced to the fundamentals of aquiring and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown report for your assigned TCGA ID, featuring plots and identifying impactful mutations and/or genes. The following concepts will be covered: 
+In this workshop, you will be introduced to the fundamentals of acquiring and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown report for your assigned TCGA ID, featuring plots and identifying impactful mutations and genes from RNAseq. The following concepts will be covered: 
 
 ## 1. Basic Bioinformatic Workflow: From Sample to Identifying Potentially Targetable Mutations
 
