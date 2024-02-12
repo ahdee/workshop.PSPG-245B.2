@@ -92,7 +92,8 @@ We will be using the TCGA study on Breast Invasive Carcinoma (TCGA, Cell 2015), 
 # load require package and "source" an auxiliary R script design for this workshop.  
  
 
-library ( cgdsr)
+# library ( cgdsr), cgdsr now depecrated -- good lesson here 
+library(cBioPortalData)
 library ( ggplot2)
 library(knitr)
 library(kableExtra)
@@ -109,7 +110,13 @@ source("auxi.R")
 
 # initiate cbioportal API
 
-cbiop = CGDS("http://www.cbioportal.org/")
+cbiop <- cBioPortal(
+  hostname = "www.cbioportal.org",
+  protocol = "https",
+  api. = "/api/v2/api-docs",
+  token = character()
+)
+
 ```
 
 # Learn how to communicate with cbioportal and study what is available. 
@@ -131,7 +138,7 @@ cbiop = CGDS("http://www.cbioportal.org/")
 ```{r }
 
 # Start by getting a list of cancer studies available at cbio
-studies = getCancerStudies(cbiop)
+studies <- getStudies(cbiop, buildReport = TRUE)
 
 # This will return a table with a list of available cancer studies to draw from 
 k2( head ( studies, 10) , "example list of data available in cbioportal")
@@ -140,18 +147,21 @@ k2( head ( studies, 10) , "example list of data available in cbioportal")
 # Want to know more about a function? use "?" and the function name 
 
 ? t.test
+? getStudies
 
 # lets find out how many studies are available to the public
 dim ( studies ) # dim is a function to tabulate a dataframe
 nrow ( studies ) # nrow tells you how many rows 
 
-# QQQ how do you think we can use this to look for the dataset we need among > 200 studies?
+# QQQ how do you think we can use this to look for the dataset we need among > 300 studies?
 ## we can use the grepl function which uses regular expression to search within objects and returns a 
 ## a vector of T and F 
 
-grepl("Breast", studies$name, ignore.case = T )[15:20]
+grepl("Breast", studies$name, ignore.case = T )
+## an index is a position in a vector, eg apple, pear, peach
+which ( grepl("Breast", studies$name, ignore.case = T ) == T)
 
-## an index is position in a vector, eg apple, pear, peach, 
+
 studies$name [grepl("Breast", studies$name, ignore.case = T ) ]
 
 # QQQ, what is the T for? what if you use lower case instead of upper case

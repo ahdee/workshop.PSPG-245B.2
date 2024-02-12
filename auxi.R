@@ -1,7 +1,24 @@
 
-k2 <- function (df, tl=""){
-    kable( df , format = "html", booktabs = T, caption = tl) %>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+k2 <- function (df, tl="", ln = 15){
+    #kable( df , format = "html", booktabs = T, caption = tl, table.attr = "style='width:30%;'") %>%
+    #kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
+  if ( any ( colnames ( df ) == "description" ) ){
+  df$description = gsub ( "<A.*A>|<a.*a>", "", df$description)
+  }
+  DT::datatable( df %>% mutate_if(is.numeric, round, digits = 3 ) %>% data.frame() , rownames = F, 
+                 filter= list ( position="top", clear = FALSE )  
+                 , extensions = c ( 'Buttons' ) 
+               
+                 , options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+                                  , autoWidth = F
+                                  , scrollX=T, className = 'dt-left'
+                                  , pageLength = ln
+                                  
+                 ), 
+                 caption = tl
+                 )
+  
+  
 }
 
 samples = c("TCGA-C8-A3M7-01","TCGA-GM-A2D9-01","TCGA-BH-A1FL-01", "TCGA-E2-A14Z-01","TCGA-BH-A1FC-01","TCGA-AC-A2QJ-01", "TCGA-EW-A1P8-01","TCGA-E2-A1LE-01","TCGA-E2-A1LK-01","TCGA-AC-A2FE-01")
