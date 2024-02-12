@@ -63,7 +63,7 @@
 ---
 
 # Overview
-In this workshop, you will be introduced to the fundamentals of acquiring and utilizing cancer genomic data. Upon completion of the course, you will be able to produce your own comprehensive R Markdown report for your assigned TCGA ID, featuring plots and identifying impactful mutations and genes from RNAseq. The following concepts will be covered: 
+In this workshop, participants will gain a basic understanding of how to acquire and effectively utilize cancer genomic data. By the end of the course, attendees will be equipped to create a detailed R Markdown report for their designated TCGA ID. This report will feature graphical visualizations and basic statistical analysis, identifying potential mutations and/or gene variations through Exome/RNA sequencing. Key topics to be covered include:
 
 ## 1. Basic Bioinformatic Workflow: From Sample to Identifying Potentially Targetable Mutations
 
