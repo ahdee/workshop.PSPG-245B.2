@@ -106,13 +106,12 @@ Structural biology for coding variants
 
 # Breast Cancer
   * Breast cancer is an ideal dataset for study, as there is a sufficient amount of knowledge available to validate our results, yet there remains ample opportunity for interesting and valuable discoveries.
-  * This workshop will be entirely focused on the analysis of public datasets. The data will be collected and analyzed in the context of current knowledge.
-  * The primary GOAL of this workshop is to provide you with the foundation to pursue further research projects. While there are two main goals, we hope that you will be able to use and expand upon what you learn here. In this 2-3 hour works shop we will attempt to: 
+  * This workshop will be entirely focused on the analysis of public datasets collected via an API in an R environment and analyzed in real-time.
+  * The primary goal of this workshop is to provide you with the foundation to pursue further research projects. We hope that you will be able to use and expand upon what you learn here. In this 2-3 hour workshop we will attempt to: 
     + "discover" a general molecular profile for the TCGA Breast Cancer dataset.  
-    + https://pubmed.ncbi.nlm.nih.gov/26451490/
-    + Each participant has been assigned a TCGA patient identifier for this dataset, and your task is to use the tools provided in this workshop to gather as much information as possible. Atthe end of the workshop you should have a complete report for your assigned sample. 
+    + Each participant has been assigned a TCGA patient identifier for this dataset, and your task is to use the tools provided in this workshop to gather as much information as possible. At the end of the workshop, you should have a complete report for your assigned sample.
 
-## Wile the assignment is an important aspect of this workshop, the primary objective is to spark your enthusiasm for bioinformatics and illustrate the depth of information that can be obtained even with a cursory examination of data. The potential is limitless, so feel free to ask questions and embrace the learning experience. We encourage you to fully participate and take advantage of this. Contact information in class notes. 
+### While the assignment is an important aspect of this workshop, the primary objective is to spark your enthusiasm for bioinformatics and illustrate the depth of information that can be obtained even with a cursory examination of data. The possibilities are endless, so feel free to ask questions and embrace the learning experience. We encourage you to fully participate and take advantage of this. Contact information is provided in the class notes. 
   
 
 # Hands on Workshop ( this will constitute the bulk of the time spent )
