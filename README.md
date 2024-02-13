@@ -42,7 +42,7 @@
 
         # this version is now obsolete ( leaving here as reminder to always save local copies )  
        
-        devtools::install_github("cBioPortal/cgdsr")
+        # devtools::install_github("cBioPortal/cgdsr")
         devtools::install_github("waldronlab/cBioPortalData")
         
         BiocManager::install(c( "cBioPortalData", "ggplot2", "knitr", "kableExtra", "dplyr", "VennDiagram", "reshape2", 
