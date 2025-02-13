@@ -14,7 +14,7 @@ editor_options:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE )
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, include = FALSE , cache.lazy = FALSE )
 ```
 
 # Introduction
@@ -618,6 +618,7 @@ k2 ( head ( mutations[ grepl("^BRCA", mutations$hugoGeneSymbol),  ] ) )
 # lets find the frequency of   mutationType
 ## tabulate mutationType, return that as a dataframe and save as mutation.type
 mutation.type =  # 
+
 mutation.type = mutation.type[ order ( mutation.type$Freq), ]
 
 mutation.type$Var1 = factor ( mutation.type$Var1, levels = mutation.type$Var1)
@@ -1047,48 +1048,57 @@ go_2 =dotplot(go_enrich_bp)
 ## demo only 
 * Please see assignmet. 
 * Figure out what figures to put and what to leave out. 
-* know you myid and where it all fits. 
+* know your myid and where it all fits. 
 
+```{r}
+# your turn to study your id, what are the mutations ( dp, af), cna, expression  
+# study the cohort some more... 
+### bonus
+#what other info can you extract from this?
+# can you add other cohorts to validate
+# may be you can do a follow up study ;) 
+myid 
+```
 
 ### RNAseq Volcano 
 
-```{r fig=TRUE,fig.width=8, fig.height=10}
+```{r fig=TRUE,fig.width=8, fig.height=5, include=TRUE}
 vol1
 ```
 
 ### Heatmap 
 
-```{r fig=TRUE,fig.width=8, fig.height=10}
+```{r fig=TRUE,fig.width=8, fig.height=6, include=TRUE}
 ht
 ```
 
 ### GSEA summary1 
 
-```{r fig=TRUE,fig.width=15, fig.height=14}
+```{r fig=TRUE,fig.width=15, fig.height=7, include=TRUE}
 gsea_dot
 ```
 
 
 ### GO 1  
-```{r fig=TRUE,fig.width=5, fig.height=5}
+```{r fig=TRUE,fig.width=5, fig.height=5, include=TRUE}
 go_1
 ```
 
 ### GO 2
-```{r fig=TRUE,fig.width=12, fig.height=5}
+```{r fig=TRUE,fig.width=12, fig.height=5, include=TRUE}
 go_2
 ```
 
 
 ### mutations 
 
-```{r fig=TRUE,fig.width=12, fig.height=5}
+```{r fig=TRUE,fig.width=12, fig.height=5, include=TRUE}
 ilc_mut_plot + idc_mut_plot
 ```
 
 ### CNA 
 
-```{r fig=TRUE,fig.width=12, fig.height=5}
+```{r fig=TRUE,fig.width=12, fig.height=5, include=TRUE}
 ilc_cna_plot + idc_cna_plot
 ```
 
