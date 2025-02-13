@@ -19,11 +19,14 @@
         3. **gridExtra**: Provides functions to arrange multiple grid-based plots on a page.
         4. **ggrepel**: Provides geoms for ggplot2 to repel overlapping text labels.
         5. **ggpubr**: 'ggplot2' Based Publication Ready Plots.
+        6. **ggpval**: Add statistical test directly onto ggplots.
+        7. **pheatmap**: Generate Heatmaps
         
         ### Data Manipulation and Analysis
         1. **dplyr**: Provides functions for the most common data manipulation.
         2. **reshape2**: Reshaping data.
         3. **DT**: Provides an interface to the JavaScript library DataTables to display R data as interactive HTML tables.
+        4. **openxlsx**: interact with Excel
         
         ### Reporting and Documentation
         1. **knitr**: Provides a general-purpose tool for dynamic report generation in R using Literate Programming techniques.
