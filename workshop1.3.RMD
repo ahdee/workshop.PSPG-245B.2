@@ -1,0 +1,1102 @@
+---
+title: "Workshop Mutation PSPG 245B"
+author: "Lee and Clugston"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE )
+```
+
+# Introduction
+
+< Explain > 
+
+## Goals  
+
+< what are you trying to achieve >
+
+<hr>
+
+### <B><font color="red"> You can add HTML/CSS code directly into the markdown </font></B>
+
+
+<style type="text/css">
+.main-container {
+max-width: 1300px;
+margin-left: 5px;
+margin-right: auto;
+}
+.toc-content {
+max-width: 1300px;
+margin-left: 5px;
+margin-right: auto;
+}
+
+</style>
+
+
+<hr>
+
+```{r, include=T, echo=F, message=FALSE, warning=FALSE, fig=TRUE}
+
+# Session->set working directory -> to source file location 
+
+# Please make sure to set to set the working directory
+# Please make sure to set to set the working directory 
+## did you make sure to set the working directory? 
+### if you don't set your script to the working directory it  will fail to run.
+
+
+
+ 
+
+# library ( cgdsr), cgdsr now obsolete -- 
+
+## data aquisition
+library(cBioPortalData)
+
+## markdown 
+
+library(knitr)
+library(kableExtra)
+library ( DT )
+
+## data management
+
+library ( dplyr )
+library ( reshape2)
+library("openxlsx")
+
+## plots 
+
+library ( ggplot2)
+library (ggrepel)
+library(gridExtra)
+library ( patchwork)
+library ( ggpubr )
+library(ggpval)
+library ( ggridges )
+library(VennDiagram)
+library(pheatmap)
+
+
+
+library ( limma)
+library( edgeR)
+
+library(clusterProfiler)
+library (DOSE)
+library( 'org.Hs.eg.db', character.only = TRUE)
+
+## pseudo package designed for this class 
+source("auxi.R")
+
+
+```
+
+
+
+```{r}
+# initiate cbioportal API
+
+cbiop <- cBioPortal(
+  hostname = "www.cbioportal.org",
+  protocol = "https",
+  api. = "/api/v2/api-docs",
+  token = character()
+)
+
+```
+
+# Learn how to communicate with cbioportal and study what is available. 
+
+* This portal is hierarchically structured. This is the workflow. 
+  + Initiate cBioPortal API
+  + List studies
+  + List available datasets for the chosen study
+    + Find all sample IDs associated with the dataset
+    + Acquire clinical data
+  + List available molecular data associated with the dataset
+  + Download
+
+
+```{r }
+
+# Start by getting a list of cancer studies available at cbio
+studies <- data.frame ( getStudies(cbiop, buildReport = TRUE) )
+
+# study studies
+
+
+## the name and description column
+## the citation 
+## Return a table with a list of available cancer studies to draw from 
+## looks like one study per row. 
+## how many studies are available? 
+
+
+# Find the studyId? - each row is associated with a primary key 
+
+## description: Breast Invasive Carcinoma
+## citation: Cell 2015
+## name: Breast Invasive Carcinoma
+## pmid: 26451490
+## N=818
+
+
+
+brca.study = ""
+
+# Note: each institution has different ways of organizing their data
+## even different versions of the API can be structured differently
+
+
+# Now that we found the study we can study it a bit.
+## list out all the available data sets
+
+dataset = sampleLists (cbiop, studyId = brca.study )  
+## study dataset 
+
+## here we see that brca_tcga_pub2015_all is probably the best to use because it includes ALL Complete Tumors 
+case.list.id = "brca_tcga_pub2015_all"
+
+## Now lets see what samples are in here and to make sure that your assigned TCGA id is in here.
+## these have meta data not found elsewhere. 
+ 
+
+sample_list = samplesInSampleLists(
+    api = cbiop,
+    sampleListIds = c ( case.list.id, # all samples
+                        "brca_tcga_pub2015_erneg", # ER- breast
+                        "brca_tcga_pub2015_erpos", # ER+ breast
+                        "brca_tcga_pub2015_trineg",# Triple Negative breast 
+                        "brca_tcga_pub2015_her2pos",# Her+ breast 
+                        "brca_tcga_pub2015_idc_luma", # Invasive Ductal Cancer (Luminal A)
+                        "brca_tcga_pub2015_idc_lumB", # Invasive Ductal Cancer (Luminal B)
+                        "brca_tcga_pub2015_ilc_lumA"  # Invasive Lobular Cancer (Luminal A)
+                        )
+)
+
+############## BACK TO SLIDE 
+
+## this is the data we want "case" case.list.id
+names ( sample_list )
+# study the sample_list
+
+# Note how the IDs are structured 
+## TCGA-LQ-A4E4-01
+## project_tissue.source_pid_sampleID 
+
+# To match you TCGA ID you must first remove the sampleID
+## example 
+gsub("-[^-]*$", "", 'TCGA-LQ-A4E4-01')
+
+# you can use the function apply to loop through the entire list 
+## cleanup 
+sample_detail = sample_list # save this for later 
+
+sample_list <- lapply(sample_list, function(x) gsub("-[^-]*$", "", x))
+
+mysample = sample_list[[ case.list.id ]]
+# check mysamples which contains all the TCGA ids for the entire set. 
+
+# Here I chose a random sample to test 
+myid = "TCGA-BH-A0GY" # put your assigned id here 
+                      # TCGA-D8-A27G
+```
+
+
+## Find you TCGA ID
+
+* Important here: you need to replace this with your own assigned TCGA ID. For this report I'm using `r myid` 
+
+```{r}
+
+# check if your sample is present
+## mysample 
+## use == or intersect or grepl
+
+
+
+
+```
+
+
+## Clinical data. 
+
+```{r}
+
+
+#  get clinical some data
+## recall mysample contains all the ids in this dataset 
+
+myclinicaldata = clinicalData(api = cbiop, studyId = brca.study )
+myclinicaldata = myclinicaldata[ myclinicaldata$patientId %in%  mysample, ] 
+
+# lets get the clinical information for your specific TCGA id.
+## lets look through the clinical data and see what info do we have. 
+## Question can you think of any usage for these data? 
+
+DT::datatable( t ( myclinicaldata[myclinicaldata$patientId %in% myid, ] ),  options = list (pageLength=20) )  
+
+## recall paper: Invasive Ductal Carcinoma vs. Invasive Lobular Carcinoma (ILC)
+## notice the inconsistant terminology paper vs dataset  
+
+## which field do we need
+## calculate frequency table 
+## Think about what attributes might be important to your study important fields to consider.
+## Think like a statistician - imagine you are writing a paper what preliminary data can 
+## we extract from this? 
+
+fields_of_interest <- c("RACE", 
+                       "AJCC_PATHOLOGIC_TUMOR_STAGE",
+                       "HISTOLOGICAL_DIAGNOSIS", "...")
+
+attr1 = c( "sampleId", "AGE","SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE", "DAYS_TO_LAST_FOLLOWUP", "DFS_MONTHS", "DFS_STATUS", "RACE",
+          "HISTOLOGICAL_DIAGNOSIS", "OS_MONTHS", "OS_STATUS", "TUMOR_STATUS",  "DAYS_TO_DEATH", "CANCER_TYPE", "MUTATION_COUNT", 
+          "TUMOR_TISSUE_SITE"
+          )
+DT::datatable( t ( myclinicaldata[myclinicaldata$patientId %in% myid, attr1 ] ),  options = list (pageLength=20) ) 
+
+
+# recall our sample list from above 
+names ( sample_list  )
+head ( sample_list[[case.list.id ]] )
+
+# get samples from other groups 
+t3.study = "brca_tcga_pub2015_trineg"
+t3 = sample_list[[t3.study ]]
+
+her2p.study = "brca_tcga_pub2015_her2pos"
+her2p = sample_list[[her2p.study ]]
+
+er_POS.study = "brca_tcga_pub2015_erpos"
+er_POS = sample_list[[er_POS.study ]]
+
+er_neg.study = "brca_tcga_pub2015_erneg"
+er_neg = sample_list[[er_neg.study ]]
+
+## Note for simplicity we are not sub-dividing the histology by A vs B subtypes 
+
+idc = myclinicaldata[myclinicaldata$HISTOLOGICAL_DIAGNOSIS == "Infiltrating Ductal Carcinoma", ]$patientId
+
+ilc=myclinicaldata[myclinicaldata$HISTOLOGICAL_DIAGNOSIS == "Infiltrating Lobular Carcinoma", ]$patientId
+
+mix = myclinicaldata[myclinicaldata$HISTOLOGICAL_DIAGNOSIS == "Mixed Histology (please specify)", ]$patientId
+
+
+## clean up 
+## see the intersection 
+er_POS<- na.omit(er_POS)
+her2p <- na.omit(her2p)
+t3 <- na.omit ( t3)
+idc <- na.omit(idc)
+ilc <- na.omit(ilc)
+mix <- na.omit(mix)
+
+
+
+## does your sample fall into 
+### Infiltrating Ductal Carcinoma 
+### Infiltrating Lobular Carcinoma ?
+## use myclinicaldata HISTOLOGICAL_DIAGNOSIS
+myid
+
+# lets store these ids 
+x = list(
+    "ER+" = er_POS,
+    "HER2+" = her2p,
+    #"Triple" = t3,
+    "IDC" = idc,
+    "ILC" = ilc
+)
+
+
+# data and paper: ILC is high in ER+ 
+# paper: IDC is "enriched" for ER+ when compared to ILC 
+display_venn(
+  x,
+  category.names = names ( x ),
+  fill = c("#999999", "#E69F00", "#56B4E9", "#009E73")
+)
+
+# you can always check the numbers yourself 
+names ( x )
+
+
+## lets add these annotations to the main clinical dataframe 
+
+for (name in names(x)) {
+  myclinicaldata[[name]] <- ifelse(myclinicaldata$patientId %in% x[[name]], 1, 0)
+}
+
+
+# Is there an age bias 
+## make sure to conver to numeric 
+myclinicaldata$AGE = as.numeric ( myclinicaldata$AGE)
+# check distribution
+## plot ?
+
+
+# facet this by group
+## this is only a rough estimate since samples can be in both 
+## see if there are any bias, if so what should have the author done? 
+
+rbind(
+  myclinicaldata %>% filter(`IDC` == 1) %>% mutate(Group = "IDC"),
+  myclinicaldata %>% filter(`ILC` == 1) %>% mutate(Group = "ILC"),
+  myclinicaldata %>% filter(`ER+` == 1) %>% mutate(Group = "ER+"),
+  myclinicaldata %>% filter(`HER2+` == 1) %>% mutate(Group = "HER2+"),
+  myclinicaldata %>% mutate(Group = "All")
+) %>%
+ggplot(., aes(x = AGE, fill = Group)) +
+  geom_histogram(alpha = 0.3, bins = 20, position = "identity") +
+  facet_wrap(~ Group, scales = "free_y") +
+  theme_minimal() +
+  labs(title = "Age Distribution by Group", x = "Age", y = "Count")
+
+##########################  back to slides 
+
+```
+
+```{r}
+
+## normally somatic mutation increases with age.  
+
+
+myclinicaldata$MUTATION_COUNT = as.numeric ( myclinicaldata$MUTATION_COUNT )
+
+# Question what can we do if its not normally distributed?
+
+hist ( myclinicaldata$MUTATION_COUNT )
+
+# Is expected that mutation tends to increase with age, is this true for breast cancer?
+## how to improve? 
+
+ggplot(myclinicaldata , aes(x= log2 ( MUTATION_COUNT) , y= AGE)) +
+  geom_point(position = position_jitter(width = 0.05, height = 0.05), size=7, alpha=.3) + 
+  geom_smooth(method=lm
+              , se=FALSE
+              , fullrange=TRUE
+  )+
+  theme_classic() +  stat_cor(method = "pearson"
+                              , label.x.npc = .65
+                              , label.y.npc = .065 
+                              , size=6 
+                              ) 
+
+
+
+
+```
+
+
+
+
+```{r}
+ 
+
+# Now lets see what modalities are available for your study 
+
+molecular_profile =
+  molecularProfiles(
+    cbiop,
+    studyId = brca.study
+    
+  )
+
+# take look please
+
+# so looking at that we now know it contains several interesting modalities.  
+
+
+mutation = molecular_profile[grepl( "Mutation", molecular_profile$description, ignore.case = T), ]$molecularProfileId 
+
+cna = molecular_profile[grepl( "Putative copy", molecular_profile$description, ignore.case = T ), ]$molecularProfileId
+
+exp = molecular_profile[grepl( "V2 RSEM", molecular_profile$description), ]$molecularProfileId
+exp = exp[ grepl ( "mrna$", exp)]
+
+```
+
+
+
+# Now that we have a basic understanding of what is available lets go and download the actual data. 
+
+```{r}
+
+# Note: its important to be mindful of resources when downloading from public data.  We need to play nice and consider the server load. 
+# here I've pre-fetched all the data you need. 
+
+temp = mutationData(
+  cbiop,
+  molecularProfileIds = mutation,
+  entrezGeneIds = 1:10 ,
+  sampleIds = sample_detail$brca_tcga_pub2015_all
+)
+
+
+
+thaw = 1 
+
+if ( thaw == 0 ){
+  
+genes <- geneTable(cbiop, pageSize = 99999 ) 
+cgenes = genes[ genes$hugoGeneSymbol %in% unique ( cancer.gene), ]
+
+mut <- mutationData(
+  cbiop,
+  molecularProfileIds = mutation,
+  entrezGeneIds = genes$entrezGeneId ,
+  sampleIds = sample_detail$brca_tcga_pub2015_all
+)
+
+mut_df = mut$brca_tcga_pub2015_mutations[ , 3:ncol(mut$brca_tcga_pub2015_mutations ) ]
+mutations = merge ( mut_df, genes, by="entrezGeneId" )
+ 
+# create coordinates
+mutations$igv = paste ( mutations$chr, mutations$startPosition, mutations$endPosition, mutations$referenceAllele, mutations$variantAllele)
+
+# clean up mutations 
+
+mutations =  mutations[ , c(1,4,9:ncol(mutations))] 
+
+
+### in last lecture but removed. 
+  mutations = merge ( mutations
+                      , cosmic.70[ , c( "igv", "description")]
+                      , by="igv", all.x=T, all.y=F )
+  
+  mutations$dp = mutations$tumorAltCount + mutations$tumorRefCount 
+  seg =quantile ( mutations$dp, probs= c( .01, .2 ))
+  mutations = mutations[ mutations$dp > as.numeric ( seg[1] ), ]
+  
+  mutations$af = mutations$tumorAltCount / mutations$dp
+  mutations = mutations[ order ( - mutations$af ) , ]
+  # lets further filter the mutations with any af > .1
+  mutations = mutations[ mutations$af > .1, ]
+  mutations$drug = paste ( mutations$hugoGeneSymbol, mutations$proteinChange)
+
+
+
+
+cna <- molecularData (
+  cbiop,
+  molecularProfileIds = cna,
+  entrezGeneIds = cgenes$entrezGeneId,
+  sampleIds = paste0 ( c ( x$IDC, x$ILC ), "-01" )
+)
+
+cna_with_genes <- merge(
+  cna$brca_tcga_pub2015_gistic,
+  genes[, c("entrezGeneId", "hugoGeneSymbol")],
+  by = "entrezGeneId"
+)
+
+genes[ genes$hugoGeneSymbol %in% c("CDH1", "PIK3CA", "FOXA1", "PTEN", "GATA3"), ]
+
+# recount here setwd("/ehome/resource/recount3/get_specific.R")
+
+saveRDS( list ( 
+  studies = studies
+  ,mycaselist = mycaselist
+  ,myclinicaldata =myclinicaldata 
+  ,RNAseq = data_rna
+  ,mutation= mut_df
+  , cna = cna_with_genes
+  , all_genes = genes
+  , meta = "Downloaded with cBioPortalData_2.12.0 on 02/10/2025 \n study set: brca_tcga_pub2015_all"
+  ), "freeze.rds"
+         )
+
+}
+
+
+
+```
+
+```{r}
+
+
+# everything is stored in data 
+
+cat ( data$meta, "\n")
+
+mutations = data$mutation
+cna = data$cna
+expression = data$RNAseq
+
+
+######################## Back to Slides ############################
+
+```
+
+
+# mutation table
+
+```{r}
+
+# all mutations are stored in mutations. 
+# lets take a few minutes here to go over the different fields.
+
+unique( mutations$mutationType)
+
+# count mutations for your sample 
+
+mt = "" # mutations. 
+
+# subset mutation for your id only and save it into mt
+# mt 
+mt = mt %>% replace(is.na(.), '')  %>% data.frame()
+
+k2 ( mt )
+                  
+```
+
+
+# Identifying pathogenic mutations. 
+
+
+```{r}
+
+######################## Back to Slides ############################
+
+# method 1 annotations. Relevant to cancer. 
+## genes that had already been implicated in cancer.
+## We do this by looking through different organization and cross reference a list of genes. 
+
+k2 ( cancer.list[17:25, ], "cancer list")
+
+length ( cancer.gene)
+
+
+## lets check this list to make sure genes that are relevant to breast cancer exists 
+
+imp = as.character ( cancer.list[grepl("^BRCA|^ATM$|^BARD1$|^CDH1$|^CHEK2$|^NBN$|^NF1$|^PALB2$|^PTEN$|^TP53$|^PIK3CA$|^GATA3$", cancer.list$gene), ]$gene )
+
+imp = unique ( c(imp, paper_gene ))
+
+# Note: we add ^ in front and $ for only some genes and not others. 
+
+k2 ( cancer.list[cancer.list$gene %in% imp, ], "breast cancer genes")
+
+
+
+## first lets look for anything in cosmic 
+
+k2 ( head ( cosmic.70[ grepl("breast",  cosmic.70$description ), ], 20 ), "breast cancer in cosmic")
+## how many are in there?  
+
+# Next find out how many mutations we have that is also found in cosmic 
+## the description field should not be empty if there was a cosmic entry
+
+nrow ( mutations[ ! is.na ( mutations$description ),  ] ) / nrow (mutations)
+
+
+# check if cosmic contain BRCA mutations.  This is a good sanity check. 
+## please check other mutations in the paper like CDH1, PIK3CA
+## what type of mutationType? 
+k2 ( head ( mutations[ grepl("^BRCA", mutations$hugoGeneSymbol),  ] ) )
+
+
+```
+
+# Now that the data has been succesfully donwloaded and annotated lets study it a bit more. 
+
+```{r}
+
+# lets find the frequency of   mutationType
+## tabulate mutationType, return that as a dataframe and save as mutation.type
+mutation.type =  # 
+mutation.type = mutation.type[ order ( mutation.type$Freq), ]
+
+mutation.type$Var1 = factor ( mutation.type$Var1, levels = mutation.type$Var1)
+
+ggplot(mutation.type, aes(Var1,Freq), label=Freq ) +
+    geom_bar(aes(fill = Freq), stat="identity", position = "dodge") +
+    coord_flip() +
+    scale_fill_distiller(palette = "RdBu") + xlab("") + ylab("") +
+    theme(strip.text.y = element_text(angle = 0), legend.position="none") +
+    geom_text(aes(label=Freq), position=position_dodge(width=0.9), vjust=.4, hjust = .5, size=5) +
+    theme(panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(), 
+          axis.line = element_line(colour = "black"), 
+          text = element_text(size=16),  # size of label
+          axis.text.x = element_text(angle=0, hjust=1) ) + ggtitle ( "All mutation types")
+
+## paper is comparing idc, ilc, mix
+## lets facet this. 
+## create a new field called label
+mutations$label <- case_when(
+  mutations$patientId %in% idc ~ "idc",
+  mutations$patientId %in% ilc ~ "ilc",
+  mutations$patientId %in% mix ~ "mix",
+  TRUE ~ "other"
+)
+
+ccc = c( idc = "#a6cee3", ilc= "#fdbf6f" ) 
+
+ggplot(mutations, aes(x = reorder(mutationType, mutationType, function(x) -length(x)))) +
+    geom_bar(aes(fill=label)) +
+    facet_wrap(~label, scales = "free_y") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(
+        title = "split",
+        x = "Mutation Type",
+        y = "Count"
+    ) + scale_fill_manual(values = ccc)
+
+
+## find the top 10 most altered mutation by group
+## plot idc and ilc store each as idc_mut_plot and ilc_mut_plot  
+mutations %>%
+  group_by(label, hugoGeneSymbol) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  group_by(label) %>%
+  slice_max(order_by = count, n = 10) %>%
+  ggplot(aes(x = reorder(hugoGeneSymbol, count), y = count)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~label, scales = "free") +
+  coord_flip() +  
+  theme_bw() +
+  labs(
+    title = "Top 10",
+    x = "Gene Symbol",
+    y = "Count"
+  )
+
+ 
+
+#############
+# idc_mut_plot
+
+idc_mut_plot = mutations[mutations$label == "idc", ] %>%
+  group_by(label, hugoGeneSymbol) %>%
+  summarise(count = n() / length ( idc), .groups = 'drop') %>%
+  group_by(label) %>%
+  slice_max(order_by = count, n = 10 , with_ties = F) %>%
+  ggplot(aes(x = reorder(hugoGeneSymbol, count), y = count)) +
+  geom_bar(stat = "identity", aes(fill=label)) +
+  coord_flip() +  
+  theme_bw() +
+  labs(
+    title = "Top 10 (IDC)",
+    x = "Gene Symbol",
+    y = "Percent"
+  ) + scale_fill_manual(values = ccc) +
+  theme(
+  axis.title = element_blank(),
+  legend.position = "none",
+  panel.grid = element_blank()
+) 
+
+ilc_mut_plot = mutations[mutations$label == "ilc", ] %>%
+  group_by(label, hugoGeneSymbol) %>%
+  summarise(count = n()/ length ( ilc ), .groups = 'drop') %>%
+  group_by(label) %>%
+  slice_max(order_by = count, n = 10, with_ties = F) %>%
+  ggplot(aes(x = reorder(hugoGeneSymbol, count), y = count)) +
+  geom_bar(stat = "identity", aes(fill=label)) +
+  coord_flip() +  
+  theme_bw() +
+  labs(
+    title = "Top 10 (ILC) ",
+    x = "Gene Symbol",
+    y = "Percente"
+  ) + scale_fill_manual(values = ccc) +
+    theme(
+  axis.title = element_blank(),
+  legend.position = "none",
+  panel.grid = element_blank()
+) 
+
+############
+ilc_mut_plot + idc_mut_plot
+############
+######################## Back to Slides ############################
+
+# lets calculate a p.value using fisher.exact test. and correct for using fdr
+## this is the "q" value 
+# Run fisher exact test analysis
+gene_results <- analyze_all_genes(
+  mutations[ mutations$hugoGeneSymbol %in%  cancer.gene,
+        ])
+
+k3 ( head ( gene_results ))
+
+######################## Back to Slides ############################
+
+######### CNA 
+cna$label <- case_when(
+  cna$patientId %in% idc ~ "idc",
+  cna$patientId %in% ilc ~ "ilc",
+  cna$patientId %in% mix ~ "mix",
+  TRUE ~ "other"
+)
+
+
+ilc_cna_plot = cna[cna$label == "ilc" & cna$hugoGeneSymbol %in% paper_gene, ] %>%
+  # First determine the dominant direction for each gene
+  group_by(hugoGeneSymbol) %>%
+  mutate(direction = if(mean(value) > 0) "up" else "down") %>%
+  # Now continue with your existing grouping and calculations
+  group_by(label, hugoGeneSymbol, direction) %>%
+  summarise(count = n() / length(ilc)) %>%
+  group_by(label) %>%
+  slice_max(order_by = count, n = 10, with_ties = F) %>%
+  ggplot(aes(x = reorder(hugoGeneSymbol, count), y = count)) +
+  geom_bar(stat = "identity", aes(fill = direction)) +
+  coord_flip() +  
+  theme_bw() +
+  labs(
+    title = "Top 10 CNA Frequency (ILC)",
+    x = "Gene Symbol",
+    y = "Percentage"
+  ) + 
+  scale_fill_manual(values = c("up" = "#c27b4c", "down" = "#6c8da6")) +
+  theme(
+    axis.title = element_blank(),
+    legend.position = "none",
+    panel.grid = element_blank()
+  )
+
+
+
+idc_cna_plot = cna[cna$label == "idc" & cna$hugoGeneSymbol %in% paper_gene, ] %>%
+  # First determine the dominant direction for each gene
+  group_by(hugoGeneSymbol) %>%
+  mutate(direction = if(mean(value) > 0) "up" else "down") %>%
+  # Now continue with your existing grouping and calculations
+  group_by(label, hugoGeneSymbol, direction) %>%
+  summarise(count = n() / length(idc)) %>%
+  group_by(label) %>%
+  slice_max(order_by = count, n = 10, with_ties = F) %>%
+  ggplot(aes(x = reorder(hugoGeneSymbol, count), y = count)) +
+  geom_bar(stat = "identity", aes(fill = direction)) +
+  coord_flip() +  
+  theme_bw() +
+  labs(
+    title = "Top 10 CNA Frequency (IDC)",
+    x = "Gene Symbol",
+    y = "Percentage"
+  ) + 
+  scale_fill_manual(values = c("up" = "#c27b4c", "down" = "#6c8da6")) +
+  theme(
+    axis.title = element_blank(),
+    legend.position = "right",
+    panel.grid = element_blank()
+  )
+
+
+ilc_cna_plot + idc_cna_plot
+
+######################## Back to Slides ############################
+# simpify the output although we probably want to keep it just in case.
+
+cleanmut = c ("hugoGeneSymbol", "mutationType", "proteinChange", "referenceAllele", "variantAllele" , "tumorAltCount", "tumorRefCount" , "dp", "af", "igv", "description")  
+
+DT::datatable ( head ( mutations [ , c( cleanmut )]) )
+
+
+
+action = drug[ drug$match %in% unique ( mutations$drug  ), ]
+action.f = c("gene" ,"variant" , "disease", "drugs", "evidence_type", 
+             "clinical_significance", "evidence_statement", "evidence_civic_url", "gene_civic_url" , "match"
+)
+
+
+k2 ( head ( action[action$clinical_significance == "Sensitivity/Response" ,action.f], 2) , "Sensitivity/Response" )
+# the opposite could be true 
+k2 ( head ( action[action$clinical_significance == "Resistance" ,action.f], 2)  , "Resistance"  )
+
+######################## Back to Slides ############################
+
+```
+
+
+# Besides Mutation data we also downloaded expression RNAseq data in the form of TPM. 
+
+* Here we review two types of very important pathway analysis.
+  + Gene set Enrichment Analysis ( GSEA )
+  + Over-Representation Analysis 
+
+
+ 
+
+```{r}
+
+
+# recall binomial 
+both = intersect( names ( counts),myclinicaldata$patientId   )
+both = intersect  ( both, c(ilc,idc))
+
+new_key = myclinicaldata[myclinicaldata$patientId %in% both,  ]
+counts = counts [ , new_key$patientId]
+# sanity check to see if they are in the same order
+## add group
+new_key$label <- case_when(
+  new_key$patientId %in% idc ~ "idc",
+  new_key$patientId %in% ilc ~ "ilc",
+  new_key$patientId %in% mix ~ "mix",
+  TRUE ~ "other"
+)
+#
+
+# import and normalize 
+y.match <- DGEList( counts[ ,  new_key$patientId ])
+
+## remove low counts since this could interfere with some of the statistical approximations
+#  here half the total sample size must have > 2 raw to be included 
+# adjust as needed 
+
+threshold <- ceiling(  ncol (  counts )/2  )
+mincpm = 2
+keep <- rowSums(  cpm (  counts, log=F ) >  mincpm ) >= threshold
+
+# before 
+dim(y.match)
+y.match  <- y.match [keep, ]
+# after 
+dim (y.match)    
+
+## use trimmed mean of M-values (TMM) (Robinson and Oshlack 2010)
+## in additional to library scaling this will ensure that the expression distributions of each sample are similar
+## across the experiment
+y.match <- calcNormFactors( y.match, method = "TMM" )
+
+# convert this for further downstream but log + 1 
+
+cpm_all = log2  ( as.data.frame(cpm(y.match, prior.count=3, log=F)) + 1 )
+
+# lets see how this look like in pca
+plot_pca ( new_key, cpm_all, ccc )
+
+## get ready for DEG 
+group = new_key$label
+age = as.numeric ( new_key$AGE )
+design <- model.matrix(~ 0 + group + age )
+colnames(design) <- gsub('group', "", colnames(design))
+
+# Now you can use design_with_svs in your voom function
+voom_result <- voom(y.match, plot = TRUE, design = design)
+voom.plot <- recordPlot()
+
+
+fdr = .05
+logfc = 1.2 
+pv = 0.05
+
+contrast.matrix <- makeContrasts( 
+        Group = ilc-idc,
+        levels=design
+    )
+
+fit  <- lmFit( voom_result, design )
+
+fit.r <- contrasts.fit(fit, contrast.matrix)
+fit.r <- eBayes(fit.r)
+
+res  = topTable(fit.r, coef="Group", n=Inf )
+sig_gene = res[ res$adj.P.Val < fdr & abs ( res$logFC) > logfc & res$P.Value < pv  , ]
+
+  
+res <- merge( res , cpm_all[ , new_key$patientId ] , by="row.names", sort=FALSE )
+colnames( res   )[1] <- "gene"
+rsub <- colnames(res )[1:7]
+
+res$class <- "no-change"
+res$class[res$gene %in% row.names ( sig_gene) & res$logFC > 0] <- "up"
+res$class[res$gene %in% row.names ( sig_gene) & res$logFC < 0] <- "down"
+
+res = res[ order ( abs ( res$t)  , decreasing = T), ]
+
+vol1 = ggplot(res, aes(logFC, -log10(adj.P.Val))) +
+    geom_point(aes(col=class), size=3, alpha=.6) +
+    scale_color_manual(
+        values=c("up"="#5EAE64", "no-change"="grey", "down"="#D55A3D"),
+        breaks=c("up", "down", "no-change"),
+        labels=c(
+            paste0("up (", nrow(res[res$class=='up',]), ")"),
+            paste0("down (", nrow(res[res$class=='down',]), ")"),
+            "no-change"
+        )
+    ) +
+    ggtitle("Volcano Plot") +
+    xlab("log2 Fold Change") +
+    ylab("-log10 Adjusted P-value") +
+    theme_bw(base_size = 12) +
+    theme(
+        legend.text = element_text(size=15),
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5)  # Center the title
+    ) +
+    guides(color = guide_legend(override.aes = list(size=10))) +
+  geom_text_repel(
+        data = head ( res[res$class != "no-change", ] , 10) , 
+        aes(
+          label = gene
+        )
+        , 
+        fontface="bold", 
+        color="black",
+        size = 3, 
+        nudge_x = .15,
+    box.padding = .25,
+    nudge_y = .1,
+  
+      )  
+
+sig_gene_df = res[res$class != "no-change", ] 
+sig_gene_df = sig_gene_df[ , new_key$patientId ]
+
+
+# First, create an annotation data frame
+annotation_col <- data.frame(
+  Type = new_key$label,
+  row.names = colnames(sig_gene_df)
+)
+
+annotation_colors = list(
+  Type = ccc
+)
+
+ht = pheatmap(sig_gene_df,
+         annotation_col = annotation_col,
+         annotation_colors = annotation_colors,
+         show_rownames = FALSE,  
+         show_colnames = FALSE,  
+         clustering_distance_cols = "euclidean",  
+         clustering_distance_rows = "euclidean",  
+         clustering_method = "ward.D",           
+         scale = "row"                          
+)
+
+
+
+######################## Back to Slides ############################
+
+
+
+
+
+
+```
+
+```{r, echo=FALSE, include=FALSE}
+
+
+glist = setNames( res$t, res$gene)
+glist = sort(glist, decreasing = TRUE)
+
+
+gse <- gseGO(geneList=glist, 
+             ont ="ALL", 
+             keyType = "SYMBOL", 
+             nPerm = 10000, 
+             minGSSize = 3, 
+             maxGSSize = 800, 
+             pvalueCutoff = 0.05, 
+             verbose = TRUE, 
+             OrgDb = org.Hs.eg.db, 
+             pAdjustMethod = "fdr")
+
+
+gsea_dot = dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
+#gsea_ridge = ridgeplot(gse) + labs(x = "enrichment distribution")
+
+
+# over representation 
+# demo only
+
+go_enrich_bp <- enrichGO(gene = as.character ( res[ res$class == "up", ]$gene ),
+                      universe = as.character ( res$gene),
+                      OrgDb = org.Hs.eg.db, 
+                      keyType = 'SYMBOL',
+                      readable = F,
+                      ont = "BP",
+                      pvalueCutoff = 0.05, 
+                      qvalueCutoff = 0.10
+                      )
+
+go_1 = barplot(go_enrich_bp, 
+        drop = TRUE, 
+        showCategory = 10, 
+        title = "GO Biological Pathways",
+        font.size = 8)
+
+go_2 =dotplot(go_enrich_bp)
+
+
+
+
+```
+
+
+## demo only 
+* Please see assignmet. 
+* Figure out what figures to put and what to leave out. 
+* know you myid and where it all fits. 
+
+
+### RNAseq Volcano 
+
+```{r fig=TRUE,fig.width=8, fig.height=10}
+vol1
+```
+
+### Heatmap 
+
+```{r fig=TRUE,fig.width=8, fig.height=10}
+ht
+```
+
+### GSEA summary1 
+
+```{r fig=TRUE,fig.width=15, fig.height=14}
+gsea_dot
+```
+
+
+### GO 1  
+```{r fig=TRUE,fig.width=5, fig.height=5}
+go_1
+```
+
+### GO 2
+```{r fig=TRUE,fig.width=12, fig.height=5}
+go_2
+```
+
+
+### mutations 
+
+```{r fig=TRUE,fig.width=12, fig.height=5}
+ilc_mut_plot + idc_mut_plot
+```
+
+### CNA 
+
+```{r fig=TRUE,fig.width=12, fig.height=5}
+ilc_cna_plot + idc_cna_plot
+```
+
+
+
+
+
+  
+
+
+

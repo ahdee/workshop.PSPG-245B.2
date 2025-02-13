@@ -1,4 +1,14 @@
 
+
+
+k3 <- function ( df ){
+  
+df  %>% kable(format = "html"  ) %>%
+ kable_classic(full_width = F) %>% print
+
+  
+}
+
 k2 <- function (df, tl="", ln = 15){
     #kable( df , format = "html", booktabs = T, caption = tl, table.attr = "style='width:30%;'") %>%
     #kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
@@ -42,7 +52,7 @@ if ( raw == 1){
     drug  = read.csv( "./external/civic.txt" )
     
     
-    library("openxlsx")
+    
     
     drug <- read.xlsx("./external/civic.xlsx" , sheet="civic", colNames = TRUE)
     drug$match = paste ( drug$gene, drug$variant)
@@ -60,7 +70,9 @@ cancer.list = temp$cancer.list
 drug = temp$drug
 cancer.gene = as.character ( cancer.list$gene )
 drug.up = read.csv("drug.up.csv")
-
+counts = readRDS("Breast_cell_2015")
+colnames ( counts ) = gsub ( "-01", "", colnames ( counts ))
+data = readRDS("freeze_2025")
 }
 
 
@@ -158,7 +170,12 @@ venn.this <- function (data1, cp = c("#a6cee3","#fdbf6f","#b2df8a"), type= 3, dg
     
 }
 
-
+display_venn <- function(x, ...){
+  library(VennDiagram)
+  grid.newpage()
+  venn_object <- venn.diagram(x, filename = NULL, disable.logging = TRUE, ...)
+  grid.draw(venn_object)
+}
 
 
 
@@ -175,5 +192,125 @@ wtest <- function ( x) {
   c(wp, logfc, her2_mean,base_mean, all_mean )
 }
 
+### for the paper only 
+perform_fisher_test <- function(mutations_df, gene) {
+  # Create contingency table
+  cont_table <- table(
+    mutations_df$hugoGeneSymbol == gene,
+    mutations_df$label == "idc"
+  )
+  
+  # Perform Fisher's test
+  test_result <- fisher.test(cont_table)
+  
+  # Return results
+  return(c(
+    pvalue = test_result$p.value,
+    odds_ratio = test_result$estimate
+  ))
+}
 
+analyze_all_genes <- function(mutations_df) {
+ 
+  genes <- unique(mutations_df$hugoGeneSymbol)
+  
+  # Apply Fisher's test to each gene
+  results <- genes %>%
+    tibble(hugoGeneSymbol = .) %>%
+    rowwise() %>%
+    mutate(
+      test_results = list(perform_fisher_test(mutations_df, hugoGeneSymbol)),
+      pvalue = test_results[1],
+      odds_ratio = test_results[2]
+    ) %>%
+    ungroup() 
+  
+  results$fdr = p.adjust(results$pvalue, method = "fdr")
+  results = results[ order ( results$pvalue), ]
+ 
+  
+  results$odds_ratio = ifelse(
+    results$odds_ratio < 1,
+    round(-1/results$odds_ratio, 2),  # Negative for ILC enrichment
+    round(results$odds_ratio, 2)      # Positive for IDC enrichment
+  )
+  results$sig = ifelse ( results$fdr < .05, "*", "ns")
+  
+  
+  return(results)
+}
 #
+# Coefficient of Variation
+cov <- function(x){
+  x <- sd(x)/ mean ( abs ( x)  ) * 100
+  return (x)
+}
+
+
+plot_pca <- function ( key_c,  m.cpm, ccc ){
+  
+  set.seed(123)
+  
+  
+  # run cluster analysis to see how well the experiment looks from a global perspective. 
+  
+  
+  distuse = "euclidean"
+  linkuse = "ward.D2"
+  
+  
+  key_c$tube = key_c$patientId
+  all.equal(names(m.cpm), key_c$tube ) 
+  
+  
+  sd <- apply (m.cpm, 1,  function(x) cov(x)  )
+  
+  p = c(.1,.2,.3,.4,.5,.6, .7, .75, .8, .9,.95)
+  q <- quantile (as.numeric ( sd ), probs = p , na.rm =T )
+  
+  # correct for variance
+  get.p = "95%"
+  get.p = as.numeric ( q[get.p] )
+  sd2 = sd[ !is.na(sd) & sd >get.p  ]
+  
+  m.cpm = m.cpm [ row.names ( m.cpm) %in% names( sd2), ]
+  m.cpm = m.cpm[ , key_c$tube]
+  
+  
+  pca_results <- prcomp(t(m.cpm), scale = TRUE)
+  
+  
+  # Calculate variance explained for axis labels
+  var_explained <- round((pca_results$sdev^2 / sum(pca_results$sdev^2)) * 100, 1)
+  
+  # Create the plot
+  plot(pca_results$x[,1], pca_results$x[,2],
+       xlab = paste0("PC1 (", var_explained[1], "%)"),
+       ylab = paste0("PC2 (", var_explained[2], "%)"),
+       main = "Uncorrected PCA",
+       type = "n") 
+  
+  # Add points colored by group
+  points(pca_results$x[,1], pca_results$x[,2],
+         col = ccc[as.numeric(as.factor(key_c$label))],
+         pch = as.numeric(as.factor(key_c$label)),
+         cex = 2)
+  
+  # Add legend for groups
+  legend("topright", 
+         legend = levels(as.factor(key_c$label)),
+         col = ccc[1:length(unique(key_c$label))],
+         pch = 16)
+  
+  return ( recordPlot()  )
+  
+}
+
+
+# global variables 
+paper_gene <- c(
+  "CDH1", "PIK3CA", "PTEN", "TP53", "FOXA1", "GATA3", "RB1", "MAP2K4", "CCNE1",
+  "MYC", "CDK4", "FGFR1", "ERBB2", "EGFR"
+  
+  # "TBX3", "AKT1", "AKT2", "AKT3", "STAT3"
+)
