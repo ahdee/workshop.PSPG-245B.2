@@ -75,3 +75,6 @@ for(pkg in packages_install) {
 if ( is.null ( packages_install )){
   print ( "all good ready for class")
 }
+
+# if bioc fails try building from source
+devtools::install_github("waldronlab/cBioPortalData")
