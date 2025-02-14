@@ -365,7 +365,7 @@ ggplot(., aes(x = AGE, fill = Group)) +
   theme_minimal() +
   labs(title = "Age Distribution by Group", x = "Age", y = "Count")
 
-##########################  back to slides 
+######################## Back to Slides ############################
 
 ```
 
@@ -569,7 +569,7 @@ k2 ( mt )
 
 ```{r}
 
-######################## Back to Slides ############################
+
 
 # method 1 annotations. Relevant to cancer. 
 ## genes that had already been implicated in cancer.
@@ -599,6 +599,7 @@ k2 ( head ( cosmic.70[ grepl("breast",  cosmic.70$description ), ], 20 ), "breas
 
 # Next find out how many mutations we have that is also found in cosmic 
 ## the description field should not be empty if there was a cosmic entry
+## why so high? 
 
 nrow ( mutations[ ! is.na ( mutations$description ),  ] ) / nrow (mutations)
 
@@ -734,7 +735,10 @@ ilc_mut_plot + idc_mut_plot
 gene_results <- analyze_all_genes(
   mutations[ mutations$hugoGeneSymbol %in%  cancer.gene,
         ])
-
+# Negative for ILC enrichment
+# Positive for IDC enrichment
+### sorry transformed odd_ratio better term is "fold_enrichment"
+names ( gene_results)[ names ( gene_results) == "odds_ratio" ] = "fold_enrichment"
 k3 ( head ( gene_results ))
 
 ######################## Back to Slides ############################
